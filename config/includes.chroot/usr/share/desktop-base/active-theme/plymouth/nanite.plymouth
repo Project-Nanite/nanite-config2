@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Nanite theme
+Description=Nanite theme by Nanite Team
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/nanite
+ScriptFile=/usr/share/plymouth/themes/nanite/nanite.script

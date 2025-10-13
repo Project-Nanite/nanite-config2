@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Update hostname
+echo "nanite-live" > /etc/hostname
+
+# Update hosts file
+sed -i 's/127.0.1.1.*/127.0.1.1\tnanite-live/' /etc/hosts
+
+# Set live user
+useradd -m -s /bin/bash -G sudo,audio,video,plugdev,netdev nanite 2>/dev/null || true
+echo "nanite:nanite" | chpasswd
+
+# Set default session
+echo "exec startxfce4" > /home/nanite/.xsession
+chown nanite:nanite /home/nanite/.xsession

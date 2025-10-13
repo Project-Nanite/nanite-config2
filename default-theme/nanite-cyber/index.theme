@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Nanite Cyber
+Comment=A cyberpunk-inspired theme for XFCE with neon colors and futuristic design
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=nanite-cyber
+MetacityTheme=nanite-cyber
+IconTheme=nanite-cyber-icons
+CursorTheme=DMZ-White
+ButtonLayout=:minimize,maximize,close 

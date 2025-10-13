@@ -1,0 +1,184 @@
+#!/bin/bash
+
+# Nanite Live User Setup Hook
+# Configure the nanite user for auto-login and full privileges
+
+echo "I: Setting up nanite user for live environment..."
+
+# Create nanite user if it doesn't exist
+if ! id nanite >/dev/null 2>&1; then
+    echo "I: Creating nanite user..."
+    useradd -m -s /bin/bash -G sudo,adm,cdrom,floppy,audio,dip,video,plugdev,netdev,bluetooth,lpadmin nanite
+else
+    echo "I: Nanite user already exists"
+fi
+
+# Set up home directory
+NANITE_HOME="/home/nanite"
+mkdir -p "$NANITE_HOME"
+
+# Give nanite user passwordless sudo access
+echo "I: Configuring passwordless sudo for nanite user..."
+cat > /etc/sudoers.d/nanite << 'EOF'
+# Allow nanite user to execute any command without password
+nanite ALL=(ALL:ALL) NOPASSWD:ALL
+
+# Allow nanite user to shutdown and reboot without password
+nanite ALL=(ALL) NOPASSWD: /sbin/shutdown, /sbin/reboot, /sbin/halt, /sbin/poweroff
+EOF
+
+chmod 440 /etc/sudoers.d/nanite
+
+# Set up groups for full system access
+echo "I: Adding nanite to all necessary groups..."
+usermod -a -G sudo,adm,cdrom,floppy,audio,dip,video,plugdev,netdev,bluetooth,lpadmin,sambashare nanite 2>/dev/null || true
+
+# Remove password for nanite user (for live environment)
+echo "I: Removing password requirement for nanite user..."
+passwd -d nanite 2>/dev/null || true
+
+# Set up auto-login groups
+usermod -a -G autologin nanite 2>/dev/null || true
+
+# Create autologin group if it doesn't exist
+groupadd autologin 2>/dev/null || true
+usermod -a -G autologin nanite 2>/dev/null || true
+
+# Ensure proper ownership of home directory
+chown -R nanite:nanite "$NANITE_HOME"
+
+# Set up default shell environment
+echo "I: Setting up default environment for nanite user..."
+
+# Create .bashrc for nanite
+cat > "$NANITE_HOME/.bashrc" << 'EOF'
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Nanite-specific aliases
+alias nanite-info='nanite-sysinfo'
+alias install-nanite='nanite-installer'
+
+# Welcome message
+echo "Welcome to Nanite Linux - A Beautiful AI/ML Distribution"
+echo "Website: https://nanite.software"
+echo ""
+EOF
+
+# Create .profile for nanite
+cat > "$NANITE_HOME/.profile" << 'EOF'
+# ~/.profile: executed by the command interpreter for login shells.
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+EOF
+
+# Set proper ownership for all files
+chown nanite:nanite "$NANITE_HOME/.bashrc"
+chown nanite:nanite "$NANITE_HOME/.profile"
+
+# Ensure .Xauthority can be created
+touch "$NANITE_HOME/.Xauthority"
+chown nanite:nanite "$NANITE_HOME/.Xauthority"
+chmod 600 "$NANITE_HOME/.Xauthority"
+
+# Create .xsession-errors file with proper permissions
+touch "$NANITE_HOME/.xsession-errors"
+chown nanite:nanite "$NANITE_HOME/.xsession-errors"
+
+# Set up polkit permissions for live user
+echo "I: Setting up PolicyKit permissions..."
+cat > /etc/polkit-1/localauthority/50-local.d/nanite-admin.pkla << 'EOF'
+[Nanite Live User Admin Rights]
+Identity=unix-user:nanite
+Action=*
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+EOF
+
+# Configure live-config to not create user account
+echo "I: Configuring live-config..."
+echo "LIVE_USER_DEFAULT_GROUPS=\"audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth sudo\"" >> /etc/live/config.conf.d/nanite.conf
+echo "LIVE_USERNAME=\"nanite\"" >> /etc/live/config.conf.d/nanite.conf
+echo "LIVE_USER_FULLNAME=\"Nanite Live User\"" >> /etc/live/config.conf.d/nanite.conf
+
+# Ensure autologin works
+echo "I: Ensuring autologin configuration..."
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+cat > /etc/systemd/system/getty@tty1.service.d/autologin.conf << 'EOF'
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin nanite --noclear %I $TERM
+EOF
+
+echo "I: Nanite user setup completed successfully!"
+echo "   User 'nanite' has full sudo privileges and auto-login is configured"

@@ -1,0 +1,135 @@
+#!/bin/bash
+set -e
+
+echo "I: Configuring Calamares with complete Nanite branding..."
+
+# Ensure Calamares branding directory exists
+mkdir -p /usr/share/calamares/branding/nanite
+mkdir -p /usr/share/calamares/branding/nanite/slideshow
+
+# Ensure Calamares branding is set to Nanite
+if [ -f /etc/calamares/settings.conf ]; then
+    echo "I: Setting Calamares branding to nanite..."
+    sed -i 's/^\s*branding:.*/branding: nanite/' /etc/calamares/settings.conf || true
+    
+    # Ensure the branding line exists if it doesn't
+    if ! grep -q "branding:" /etc/calamares/settings.conf; then
+        echo "branding: nanite" >> /etc/calamares/settings.conf
+    fi
+fi
+
+# Create Calamares configuration directory if it doesn't exist
+mkdir -p /etc/calamares
+
+# Ensure proper permissions for Calamares
+echo "I: Setting up Calamares permissions and policies..."
+
+# Create PolicyKit rule for Calamares
+cat > /usr/share/polkit-1/actions/com.nanite.pkexec.calamares.policy << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+
+  <action id="com.nanite.pkexec.calamares">
+    <description>Run Calamares Installer</description>
+    <message>Authentication is required to run the Nanite Linux installer</message>
+    <defaults>
+      <allow_any>yes</allow_any>
+      <allow_inactive>yes</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/calamares</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+  </action>
+
+</policyconfig>
+EOF
+
+# Create Calamares launcher script
+cat > /usr/local/bin/nanite-installer << 'EOF'
+#!/bin/bash
+# Nanite Installer Launcher
+
+# Set environment for proper GUI operation
+export DISPLAY=${DISPLAY:-:0}
+export XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}
+
+# Set Calamares-specific environment
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_SCALE_FACTOR=1
+
+# Launch Calamares with proper branding
+exec pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY QT_AUTO_SCREEN_SCALE_FACTOR=1 /usr/bin/calamares -d
+EOF
+
+chmod +x /usr/local/bin/nanite-installer
+
+# Update desktop file to use our launcher
+if [ -f /usr/share/applications/calamares.desktop ]; then
+    sed -i 's|Exec=.*|Exec=nanite-installer|g' /usr/share/applications/calamares.desktop
+fi
+
+# Ensure desktop icon has proper permissions
+if [ -f /etc/skel/Desktop/install-nanite.desktop ]; then
+    chmod +x /etc/skel/Desktop/install-nanite.desktop
+fi
+
+# Copy desktop icon to live user
+if [ -d /home/nanite ]; then
+    mkdir -p /home/nanite/Desktop
+    cp /etc/skel/Desktop/install-nanite.desktop /home/nanite/Desktop/ 2>/dev/null || true
+    chmod +x /home/nanite/Desktop/install-nanite.desktop 2>/dev/null || true
+    chown -R nanite:nanite /home/nanite/Desktop 2>/dev/null || true
+fi
+
+# Ensure branding files are in place
+echo "I: Verifying Calamares branding files..."
+
+# Verify slideshow exists
+if [ ! -f /usr/share/calamares/branding/nanite/slideshow/slideshow.qml ]; then
+    echo "W: Slideshow file missing, Calamares may show errors"
+fi
+
+# Verify branding descriptor
+if [ ! -f /etc/calamares/branding/nanite/branding.desc ]; then
+    echo "W: Branding descriptor missing"
+fi
+
+# Verify logos exist
+if [ ! -f /usr/share/pixmaps/nanite-logo.png ]; then
+    echo "W: Nanite logo missing for Calamares"
+fi
+
+# Create Calamares module configuration
+echo "I: Configuring Calamares modules..."
+
+# Ensure proper module configuration
+mkdir -p /etc/calamares/modules
+
+# Configure welcome module for Nanite branding
+cat > /etc/calamares/modules/welcome.conf << 'EOF'
+---
+showSupportUrl:         true
+showKnownIssuesUrl:     true
+showReleaseNotesUrl:    false
+
+requirements:
+    requiredStorage:    5.5
+    requiredRam:        1.0
+    internetCheckUrl:   http://google.com
+    checkHasInternet:   false
+
+geoip:
+    style:    "none"
+    url:      ""
+    selector: ""
+
+homepage: "https://nanite.software"
+EOF
+
+echo "I: Calamares configuration completed successfully!"
+echo "   Installer should now launch properly with full Nanite branding"
+
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Create XFCE configuration for branding
+mkdir -p /etc/skel/.config/xfce4/panel
+mkdir -p /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml
+
+# Set custom application menu
+cat > /etc/skel/.config/xfce4/panel/whiskermenu-1.rc << 'EOF'
+favorites=firefox-esr.desktop,thunar.desktop,xfce4-terminal.desktop,mousepad.desktop
+button-title=Nanite Menu
+button-icon=nanite-logo
+show-button-title=true
+EOF

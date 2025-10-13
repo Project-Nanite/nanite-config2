@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Nanite AI
+Comment=Futuristic AI theme with sharp design and high-tech aesthetics
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=nanite-modern
+MetacityTheme=nanite-modern
+IconTheme=Papirus
+CursorTheme=default
+ButtonLayout=close,minimize,maximize:menu
+
+[Desktop Entry]
+Name=Nanite AI
+Comment=Futuristic AI theme with sharp design and high-tech aesthetics  
+Type=X-GNOME-Metatheme
+Version=2.0

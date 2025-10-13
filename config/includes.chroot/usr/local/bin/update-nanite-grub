@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Update GRUB configuration for Nanite Linux
+echo "Updating GRUB configuration for Nanite Linux..."
+
+# Ensure theme files exist
+if [ ! -f /usr/share/grub/themes/nanite/theme.txt ]; then
+    echo "Error: GRUB theme not found!"
+    exit 1
+fi
+
+# Check if we're in a proper environment for GRUB update
+if [ ! -d /proc ] || [ ! -f /proc/mounts ]; then
+    echo "Warning: Not in a proper environment for GRUB update"
+    echo "GRUB configuration files are ready, but update-grub cannot run"
+    echo "This is normal during live image creation"
+    exit 0
+fi
+
+# Update GRUB only if we're in a proper environment
+if command -v update-grub >/dev/null 2>&1; then
+    update-grub
+    echo "GRUB configuration updated successfully!"
+else
+    echo "Error: update-grub command not found!"
+    exit 1
+fi

@@ -1,0 +1,44 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+# Nanite Linux Live Environment Custom Menu
+
+menuentry "Nanite Linux (Live)" --class nanite --class gnu-linux --class gnu --class os {
+    set gfxpayload=keep
+    linux /live/vmlinuz boot=live components quiet splash plymouth.ignore-serial-consoles username=nanite hostname=nanite-live
+    initrd /live/initrd.img
+}
+
+menuentry "Nanite Linux (Safe Mode)" --class nanite --class gnu-linux --class gnu --class os {
+    set gfxpayload=keep
+    linux /live/vmlinuz boot=live components quiet splash nomodeset noapic noapm nodma nomce nolapic nosmp vga=788
+    initrd /live/initrd.img
+}
+
+menuentry "Nanite Linux (Memory Test)" --class nanite --class gnu-linux --class gnu --class os {
+    set gfxpayload=keep
+    linux /live/vmlinuz boot=live components memtest noapic noapm nodma nomce nolapic nosmp
+    initrd /live/initrd.img
+}
+
+menuentry "Nanite Linux (Debug Mode)" --class nanite --class gnu-linux --class gnu --class os {
+    set gfxpayload=keep
+    linux /live/vmlinuz boot=live components debug verbose
+    initrd /live/initrd.img
+}
+
+menuentry "Boot from Hard Drive" --class windows --class os {
+    set root='hd0,1'
+    chainloader +1
+}
+
+menuentry "Reboot" --class reboot {
+    reboot
+}
+
+menuentry "Shutdown" --class shutdown {
+    halt
+}

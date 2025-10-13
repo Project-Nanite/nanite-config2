@@ -1,0 +1,13 @@
+PRETTY_NAME="Nanite Linux"
+NAME="Nanite"
+VERSION_ID="1.0"
+VERSION="1.0 (Stable)"
+ID=nanite
+ID_LIKE=debian
+HOME_URL="https://nanite.software/"
+SUPPORT_URL="https://nanite.software/support"
+BUG_REPORT_URL="https://nanite.software/bugs"
+LOGO=nanite-logo
+ANSI_COLOR="1;34"
+
+

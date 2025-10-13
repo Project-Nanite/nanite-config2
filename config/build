@@ -1,0 +1,3 @@
+LB_DISTRIBUTION="bookworm"
+LB_DEBIAN_INSTALLER="live"
+LB_BOOTAPPEND_LIVE="boot=live components=user-setup,sudo,locales-all,keyboard-configuration,timezone quiet splash plymouth.ignore-serial-consoles username=nanite hostname=nanite-live"

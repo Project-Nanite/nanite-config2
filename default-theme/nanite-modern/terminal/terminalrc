@@ -1,0 +1,259 @@
+# Nanite Modern Terminal Theme
+# Clean, professional terminal styling
+
+# Terminal appearance
+TerminalTitle=Terminal
+TerminalTitleFull=Terminal - %n
+TerminalTitleTooltip=Terminal - %n
+TerminalTitleFullTooltip=Terminal - %n
+
+# Font settings
+FontName=Inter Mono 10
+FontUseSystem=false
+FontAllowBold=true
+FontBold=false
+FontItalic=false
+FontSize=10
+FontUseCustomColors=false
+
+# Color scheme - Modern dark theme
+ColorPalette=#2c3e50;#e74c3c;#27ae60;#f39c12;#3498db;#9b59b6;#1abc9c;#ecf0f1;#95a5a6;#e74c3c;#2ecc71;#f1c40f;#3498db;#9b59b6;#1abc9c;#ffffff
+
+# Background and foreground
+ColorForeground=#2c3e50
+ColorBackground=#ffffff
+ColorBackgroundIntense=#f8f9fa
+ColorBackgroundFaint=#ecf0f1
+
+# Cursor settings
+CursorBlinkMode=2
+CursorBlink=500
+CursorShape=1
+CursorColor=#3498db
+CursorColorFaint=#5dade2
+
+# Selection colors
+ColorSelection=#3498db
+ColorSelectionFaint=#5dade2
+
+# Tab settings
+TabActivityColor=#e74c3c
+TabActivityColorFaint=#e67e22
+TabColor=#ecf0f1
+TabColorFaint=#bdc3c7
+
+# Scrollbar settings
+ScrollbarPosition=2
+ScrollbarIsVertical=true
+ScrollbarFull=false
+ScrollbarOnOutput=false
+ScrollbackLines=10000
+ScrollbackIsUnlimited=false
+
+# Terminal behavior
+TerminalMisc=0
+TerminalMiscCursorBlink=1
+TerminalMiscCursorShape=1
+TerminalMiscCursorBlinkMode=2
+TerminalMiscCursorBlink=500
+TerminalMiscCursorShape=1
+TerminalMiscCursorColor=#3498db
+TerminalMiscCursorColorFaint=#5dade2
+
+# Window settings
+WindowTitle=Terminal
+WindowTitleFull=Terminal - %n
+WindowTitleTooltip=Terminal - %n
+WindowTitleFullTooltip=Terminal - %n
+
+# Menu settings
+MenuBarVisible=false
+ToolBarVisible=false
+MenusAccelerated=true
+
+# General settings
+ShowMenubar=false
+ShowToolbar=false
+ShowTerminalSize=false
+ShowTerminalSizeInTitle=false
+ShowTerminalSizeInTitleFull=false
+ShowTerminalSizeInTitleTooltip=false
+ShowTerminalSizeInTitleFullTooltip=false
+
+# Bell settings
+BellMode=0
+BellIsVisible=false
+BellIsAudible=true
+BellIsInvisible=false
+BellIsSilent=false
+
+# Mouse settings
+MouseAutohide=false
+MouseWheelZoom=false
+MouseWheelZoomModifier=0
+MouseWheelZoomModifierMask=0
+
+# Copy and paste
+CopyOnSelection=true
+CopyOnSelectionFaint=true
+PasteOnMiddleMouseButton=true
+PasteOnMiddleMouseButtonFaint=true
+
+# URL handling
+UrlColor=#3498db
+UrlColorFaint=#5dade2
+UrlUnderline=true
+UrlUnderlineFaint=true
+
+# Tab handling
+TabActivityColor=#e74c3c
+TabActivityColorFaint=#e67e22
+TabColor=#ecf0f1
+TabColorFaint=#bdc3c7
+
+# Background image (none for clean look)
+BackgroundImageFile=
+BackgroundImageMode=0
+BackgroundImageOpacity=0.5
+BackgroundImageShow=false
+
+# Transparency (disabled for readability)
+BackgroundTransparency=0
+BackgroundTransparencyFaint=0
+BackgroundTransparencyIntense=0
+
+# Border settings
+BorderWidth=0
+BorderColor=#e1e8ed
+BorderColorFaint=#bdc3c7
+
+# Margin settings
+MarginTop=5
+MarginBottom=5
+MarginLeft=5
+MarginRight=5
+
+# Padding settings
+PaddingTop=0
+PaddingBottom=0
+PaddingLeft=0
+PaddingRight=0
+
+# Geometry settings
+GeometryColumns=80
+GeometryRows=24
+GeometryWidth=640
+GeometryHeight=480
+
+# Position settings
+PositionX=0
+PositionY=0
+PositionWidth=640
+PositionHeight=480
+
+# State settings
+StateMaximized=false
+StateFullscreen=false
+StateAbove=false
+StateBelow=false
+StateSticky=false
+StateShaded=false
+
+# Focus settings
+FocusMode=0
+FocusNewWindows=true
+FocusAutoRaise=false
+FocusAutoRaiseDelay=500
+
+# Window placement
+PlacementMode=0
+PlacementReserve=true
+PlacementReserveX=0
+PlacementReserveY=0
+PlacementReserveWidth=0
+PlacementReserveHeight=0
+
+# Window snapping
+SnapEdgeEnabled=true
+SnapEdgeThreshold=10
+SnapEdgeDistance=10
+SnapEdgeResistance=0.5
+
+# Window cycling
+CycleMinimum=1
+CycleMinimumTab=1
+CycleMinimumTabAlways=false
+
+# Compositing
+Compositing=true
+CompositingManager=xfwm4
+CompositingUnredirectFullscreen=true
+CompositingVsync=true
+
+# Window animations
+AnimationEnabled=true
+AnimationDuration=200
+AnimationEasing=ease-out-cubic
+
+# Window opacity
+OpacityActive=100
+OpacityInactive=95
+OpacityRule=0:class_g=Gimp:100
+OpacityRule=0:class_g=Firefox:100
+OpacityRule=0:class_g=Thunderbird:100
+
+# Window decorations
+DecorationPlacement=top
+DecorationOffsetX=0
+DecorationOffsetY=0
+DecorationOffsetWidth=0
+DecorationOffsetHeight=0
+
+# Title bar height
+TitleHeight=28
+TitlePaddingX=8
+TitlePaddingY=4
+
+# Button size
+ButtonWidth=24
+ButtonHeight=24
+ButtonPaddingX=2
+ButtonPaddingY=2
+
+# Window states
+StateMaximized=true
+StateFullscreen=true
+StateAbove=true
+StateBelow=true
+StateSticky=true
+StateShaded=true
+
+# Workspace management
+WorkspaceCount=4
+WorkspaceName0=Main
+WorkspaceName1=Code
+WorkspaceName2=Web
+WorkspaceName3=Media
+
+# Mouse bindings
+MouseScrollWorkspace=true
+MouseScrollWorkspaceThreshold=100
+MouseScrollWorkspaceDirection=horizontal
+
+# Keyboard shortcuts
+KeybindWorkspace1=<Super>1
+KeybindWorkspace2=<Super>2
+KeybindWorkspace3=<Super>3
+KeybindWorkspace4=<Super>4
+
+# Window rules
+WindowRules=class=Gimp:state=maximized
+WindowRules=class=Firefox:state=maximized
+WindowRules=class=Thunderbird:state=maximized
+WindowRules=class=LibreOffice:state=maximized
+
+# Theme metadata
+ThemeName=Nanite Modern Terminal
+ThemeAuthor=Nanite Linux Team
+ThemeVersion=1.0
+ThemeDescription=Clean, modern terminal theme for Nanite Linux

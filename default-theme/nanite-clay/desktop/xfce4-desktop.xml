@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitor0" type="empty">
+        <property name="workspace0" type="empty">
+          <!-- Beautiful gradient background -->
+          <property name="color-style" type="int" value="2"/>
+          <property name="color1" type="array">
+            <value type="double" value="0.976471"/>
+            <value type="double" value="0.964706"/>
+            <value type="double" value="0.952941"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="color2" type="array">
+            <value type="double" value="0.945098"/>
+            <value type="double" value="0.941176"/>
+            <value type="double" value="0.921569"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/nanite-clay-gradient.jpg"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/nanite-clay-gradient.jpg"/>
+        </property>
+        <property name="workspace1" type="empty">
+          <property name="color-style" type="int" value="2"/>
+          <property name="color1" type="array">
+            <value type="double" value="0.909804"/>
+            <value type="double" value="0.658824"/>
+            <value type="double" value="0.486275"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="color2" type="array">
+            <value type="double" value="0.831373"/>
+            <value type="double" value="0.647059"/>
+            <value type="double" value="0.454902"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/nanite-clay-warm.jpg"/>
+        </property>
+        <property name="workspace2" type="empty">
+          <property name="color-style" type="int" value="2"/>
+          <property name="color1" type="array">
+            <value type="double" value="0.976471"/>
+            <value type="double" value="0.964706"/>
+            <value type="double" value="0.952941"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="color2" type="array">
+            <value type="double" value="0.952941"/>
+            <value type="double" value="0.847059"/>
+            <value type="double" value="0.768627"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/nanite-clay-subtle.jpg"/>
+        </property>
+        <property name="workspace3" type="empty">
+          <property name="color-style" type="int" value="2"/>
+          <property name="color1" type="array">
+            <value type="double" value="0.945098"/>
+            <value type="double" value="0.941176"/>
+            <value type="double" value="0.921569"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="color2" type="array">
+            <value type="double" value="0.909804"/>
+            <value type="double" value="0.658824"/>
+            <value type="double" value="0.486275"/>
+            <value type="double" value="1.000000"/>
+          </property>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/nanite-clay-soft.jpg"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  
+  <!-- Desktop icons and behavior -->
+  <property name="desktop-icons" type="empty">
+    <property name="file-icons" type="empty">
+      <property name="show-home" type="bool" value="false"/>
+      <property name="show-filesystem" type="bool" value="false"/>
+      <property name="show-trash" type="bool" value="true"/>
+      <property name="show-removable" type="bool" value="true"/>
+    </property>
+    <property name="icon-size" type="uint" value="48"/>
+    <property name="use-custom-font-size" type="bool" value="true"/>
+    <property name="font-size" type="double" value="10.000000"/>
+    <property name="single-click" type="bool" value="false"/>
+    <property name="show-tooltips" type="bool" value="true"/>
+  </property>
+  
+  <!-- Window list menu -->
+  <property name="windowlist-menu" type="empty">
+    <property name="show" type="bool" value="true"/>
+    <property name="show-app-icons" type="bool" value="true"/>
+    <property name="show-workspace-names" type="bool" value="true"/>
+    <property name="show-workspace-submenus" type="bool" value="false"/>
+    <property name="show-sticky-once" type="bool" value="true"/>
+    <property name="show-icons" type="bool" value="true"/>
+  </property>
+</channel> 

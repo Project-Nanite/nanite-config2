@@ -1,0 +1,143 @@
+# Nanite Linux - Essential Packages for Beautiful XFCE Desktop
+
+
+firmware-linux
+firmware-linux-nonfree
+firmware-realtek
+firmware-amd-graphics
+
+
+
+# Base System
+live-boot
+live-config
+live-config-systemd
+grub-pc
+
+# Plymouth Boot Splash
+plymouth
+plymouth-themes
+# Essential System Tools
+systemd
+systemd-sysv
+dbus
+udev
+apt-transport-https
+ca-certificates
+wget
+curl
+gnupg
+feh
+
+
+# Network & Hardware
+network-manager
+network-manager-gnome
+wireless-tools
+wpasupplicant
+firmware-linux-free
+firmware-linux-nonfree
+bluetooth
+bluez
+pulseaudio
+pulseaudio-module-bluetooth
+alsa-utils
+
+# XFCE Desktop Environment - Complete Suite
+xfce4
+xfce4-goodies
+xfce4-terminal
+xfce4-taskmanager
+xfce4-screenshooter
+xfce4-clipman-plugin
+xfce4-systemload-plugin
+xfce4-netload-plugin
+xfce4-weather-plugin
+xfce4-whiskermenu-plugin
+xfce4-pulseaudio-plugin
+
+# Window Manager & Compositor
+xfwm4
+
+
+# File Manager & Utilities
+thunar
+thunar-volman
+thunar-archive-plugin
+thunar-media-tags-plugin
+file-roller
+
+# Essential Applications
+firefox-esr
+mousepad
+ristretto
+libreoffice-writer
+libreoffice-calc
+libreoffice-impress
+
+# Media & Graphics
+vlc
+gimp
+imagemagick
+gstreamer1.0-plugins-good
+gstreamer1.0-plugins-bad
+gstreamer1.0-plugins-ugly
+gstreamer1.0-libav
+
+# Beautiful Modern Fonts for Claymorphism
+fonts-liberation
+fonts-dejavu-core
+fonts-ubuntu
+
+# Icons & Theming
+papirus-icon-theme
+adwaita-icon-theme
+breeze-icon-theme
+hicolor-icon-theme
+
+# System Utilities
+gvfs
+gvfs-backends
+udisks2
+policykit-1
+policykit-1-gnome
+software-properties-gtk
+synaptic
+gdebi
+htop
+
+# Printing & Scanning
+cups
+cups-browsed
+simple-scan
+
+# Archive Support
+unzip
+zip
+p7zip-full
+
+# Shell & Development Tools
+zsh
+git
+vim
+nano
+tree
+zenity
+
+# Calamares Installer
+calamares
+calamares-settings-debian
+
+# Network Tools
+openssh-client
+rsync
+
+# Power Management
+xfce4-power-manager
+
+# Appearance Manager
+gtk2-engines-murrine
+gtk2-engines-pixbuf
+
+
+

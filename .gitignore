@@ -1,0 +1,75 @@
+# Live-build .gitignore
+
+# Build directories
+/.build/
+/binary/
+/chroot/
+/cache/
+
+# Build artifacts and generated files
+*.iso
+*.img
+*.hybrid.iso
+*.zsync
+*.contents
+*.files
+*.packages
+*.packages.live
+*.packages.install
+*.log
+*.modified_timestamps
+
+# Temporary files
+*~
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# System files
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-*
+
+# Archive files (unless specifically needed)
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tgz
+*.zip
+*.rar
+*.7z
+
+# Package files
+*.deb
+*.rpm
+
+# Log files
+*.log
+/logs/
+
+# Lock files
+*.lock
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Custom excludes (uncomment if needed)
+# /local/includes.binary/
+# /local/includes.chroot/
+# /local/includes.installer/
+# /local/hooks/ 
+*.pem
+nanite-key.pem

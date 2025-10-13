@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Calamares Auto-start for Live Environment
+# This hook automatically launches Calamares when the live environment boots
+
+set -e
+
+echo "I: Setting up Calamares auto-start for live environment..."
+
+# Create autostart directory for live user
+LIVE_USER="nanite"
+LIVE_HOME="/home/$LIVE_USER"
+AUTOSTART_DIR="$LIVE_HOME/.config/autostart"
+
+# Ensure directories exist
+mkdir -p "$AUTOSTART_DIR"
+mkdir -p "$LIVE_HOME/.config"
+
+# Create Calamares autostart entry
+cat > "$AUTOSTART_DIR/calamares-installer.desktop" << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Nanite Installer
+Name[en_US]=Nanite Linux Installer
+Comment=Install Nanite Linux to your computer
+Comment[en_US]=Install the beautiful Nanite Linux distribution to your hard drive
+Exec=sudo calamares
+Icon=calamares
+Terminal=false
+StartupNotify=true
+Categories=System;Settings;
+Keywords=install;system;setup;calamares;nanite;
+GenericName=System Installer
+GenericName[en_US]=Nanite Linux Installer
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=false
+EOF
+
+# Set proper permissions
+chmod +x "$AUTOSTART_DIR/calamares-installer.desktop"
+chown -R $LIVE_USER:$LIVE_USER "$AUTOSTART_DIR"
+chown -R $LIVE_USER:$LIVE_USER "$LIVE_HOME/.config"
+
+# Create a live-environment-only autostart entry
+mkdir -p /etc/xdg/autostart
+cat > /etc/xdg/autostart/calamares-installer.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Nanite Installer
+Name[en_US]=Nanite Linux Installer
+Comment=Install Nanite Linux to your computer
+Comment[en_US]=Install the beautiful Nanite Linux distribution to your hard drive
+Exec=/usr/local/bin/check-live-and-launch
+Icon=calamares
+Terminal=false
+StartupNotify=true
+Categories=System;Settings;
+Keywords=install;system;setup;calamares;nanite;
+GenericName=System Installer
+GenericName[en_US]=Nanite Linux Installer
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-Delay=5
+EOF
+
+# Set proper permissions for system-wide entry
+chmod +x /etc/xdg/autostart/calamares-installer.desktop
+
+# Create a launcher script that ensures Calamares runs with proper environment
+cat > /usr/local/bin/nanite-calamares-launcher << 'EOF'
+#!/bin/bash
+
+# Nanite Calamares Launcher
+# Ensures Calamares runs with proper environment and permissions
+
+# Wait for desktop environment to be ready
+sleep 3
+
+# Set display if not already set
+export DISPLAY=${DISPLAY:-:0}
+
+# Ensure we're in the right directory
+cd /home/nanite
+
+# Launch Calamares with sudo
+echo "Starting Nanite Linux Installer..."
+sudo calamares "$@"
+EOF
+
+chmod +x /usr/local/bin/nanite-calamares-launcher
+
+# Update the autostart entries to use our launcher
+sed -i 's|Exec=sudo calamares|Exec=/usr/local/bin/nanite-calamares-launcher|g' "$AUTOSTART_DIR/calamares-installer.desktop"
+sed -i 's|Exec=sudo calamares|Exec=/usr/local/bin/nanite-calamares-launcher|g' /etc/xdg/autostart/calamares-installer.desktop
+
+# Create a systemd service that only runs in live environment
+cat > /etc/systemd/system/nanite-calamares-autostart.service << 'EOF'
+[Unit]
+Description=Nanite Calamares Auto-start (Live Environment Only)
+After=graphical.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=nanite
+Group=nanite
+Environment=DISPLAY=:0
+WorkingDirectory=/home/nanite
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/local/bin/check-live-and-launch
+Restart=no
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+# Enable the service (it will only run in live environment)
+systemctl enable nanite-calamares-autostart.service
+
+# Create a script to detect live environment and launch Calamares
+cat > /usr/local/bin/check-live-and-launch << 'EOF'
+#!/bin/bash
+
+# Check if we're in live environment and launch Calamares
+# Multiple detection methods for reliability
+if [ -f /etc/live-build/live-build.conf ] || \
+   [ -d /lib/live ] || \
+   [ -f /etc/live-build ] || \
+   [ -f /etc/casper.conf ] || \
+   [ -d /cdrom ] || \
+   [ -f /proc/cmdline ] && grep -q "boot=live" /proc/cmdline; then
+    echo "Live environment detected, launching Calamares..."
+    /usr/local/bin/nanite-calamares-launcher &
+else
+    echo "Not in live environment, skipping Calamares auto-launch"
+    # Disable the service in installed system
+    systemctl disable nanite-calamares-autostart.service 2>/dev/null || true
+fi
+EOF
+
+chmod +x /usr/local/bin/check-live-and-launch
+
+# Add the check script to the user's .bashrc as a fallback
+echo "# Auto-launch Calamares in live environment" >> "$LIVE_HOME/.bashrc"
+echo "if [ -z \"\$SSH_CLIENT\" ] && [ -z \"\$SSH_TTY\" ]; then" >> "$LIVE_HOME/.bashrc"
+echo "    /usr/local/bin/check-live-and-launch" >> "$LIVE_HOME/.bashrc"
+echo "fi" >> "$LIVE_HOME/.bashrc"
+
+# Ensure proper ownership of .bashrc
+chown $LIVE_USER:$LIVE_USER "$LIVE_HOME/.bashrc"
+
+echo "I: Calamares auto-start configuration completed successfully!"
+echo "I: Calamares will automatically launch when the live environment boots"

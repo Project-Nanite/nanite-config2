@@ -1,0 +1,169 @@
+#!/bin/bash
+
+# Nanite Logo Branding Hook
+# Replace all distribution logos with custom Nanite logo
+
+set -e
+
+echo "I: Applying Nanite logo branding throughout the system..."
+
+# Define the source logo
+NANITE_LOGO="/usr/share/pixmaps/nanite-logo.png"
+
+if [ ! -f "$NANITE_LOGO" ]; then
+    echo "E: Nanite logo not found at $NANITE_LOGO"
+    exit 1
+fi
+
+# Replace Debian logos with Nanite logo
+echo "I: Replacing Debian logos with Nanite logo..."
+
+# Standard locations for distribution logos
+LOGO_LOCATIONS=(
+    "/usr/share/pixmaps/debian-logo.png"
+    "/usr/share/icons/debian-logo.png"
+    "/usr/share/backgrounds/debian-logo.png"
+    "/usr/share/desktop-base/debian-logo.png"
+    "/usr/share/plymouth/debian-logo.png"
+)
+
+for location in "${LOGO_LOCATIONS[@]}"; do
+    if [ -f "$location" ]; then
+        echo "I: Replacing logo at $location"
+        cp "$NANITE_LOGO" "$location"
+    fi
+done
+
+# Update GNOME/GTK about dialogs
+echo "I: Updating system about dialogs..."
+
+# Update distributor logo symlink
+if [ -f /usr/share/pixmaps/distributor-logo.png ]; then
+    cp "$NANITE_LOGO" /usr/share/pixmaps/distributor-logo.png
+fi
+
+# Create distributor logo symlink if it doesn't exist
+ln -sf nanite-logo.png /usr/share/pixmaps/distributor-logo.png
+
+# Update desktop environment specific logos
+echo "I: Updating desktop environment logos..."
+
+# XFCE About dialog
+if [ -d /usr/share/xfce4 ]; then
+    mkdir -p /usr/share/xfce4/backdrops
+    cp "$NANITE_LOGO" /usr/share/xfce4/backdrops/nanite-logo.png
+fi
+
+# Update login screen logos
+echo "I: Updating login screen branding..."
+
+# LightDM
+if [ -d /usr/share/lightdm ]; then
+    mkdir -p /usr/share/lightdm/backgrounds
+    cp "$NANITE_LOGO" /usr/share/lightdm/backgrounds/nanite-logo.png
+fi
+
+# GDM
+if [ -d /usr/share/gdm ]; then
+    mkdir -p /usr/share/gdm/greeter
+    cp "$NANITE_LOGO" /usr/share/gdm/greeter/logo.png
+fi
+
+# Update application menu icons
+echo "I: Updating application menu branding..."
+
+# Create menu category icons
+MENU_CATEGORIES=(
+    "applications-system"
+    "applications-utilities" 
+    "applications-accessories"
+    "start-here"
+    "distributor-logo"
+)
+
+for category in "${MENU_CATEGORIES[@]}"; do
+    for size in 16 22 24 32 48 64 96 128 256 512; do
+        icon_dir="/usr/share/icons/hicolor/${size}x${size}/apps"
+        if [ -d "$icon_dir" ]; then
+            cp "$NANITE_LOGO" "$icon_dir/${category}.png" 2>/dev/null || true
+        fi
+    done
+done
+
+# Update system information
+echo "I: Updating system information branding..."
+
+# Update os-release for system info
+if [ -f /usr/lib/os-release ]; then
+    sed -i 's|LOGO=.*|LOGO=nanite-logo|g' /usr/lib/os-release
+    if ! grep -q "LOGO=nanite-logo" /usr/lib/os-release; then
+        echo 'LOGO=nanite-logo' >> /usr/lib/os-release
+    fi
+fi
+
+# Specifically handle XFCE about dialog
+echo "I: Configuring XFCE about dialog..."
+
+# Override XFCE4 about binary to use our logo
+if [ -f /usr/bin/xfce4-about ]; then
+    # Create wrapper script for xfce4-about
+    mv /usr/bin/xfce4-about /usr/bin/xfce4-about.real
+    cat > /usr/bin/xfce4-about << 'EOF'
+#!/bin/bash
+# Nanite-branded XFCE4 About wrapper
+
+# Set environment variables for branding
+export DISTRIB_ID="Nanite"
+export DISTRIB_DESCRIPTION="Nanite Linux"
+export XFCE_DISTRIBUTOR_LOGO="/usr/share/pixmaps/nanite-logo.png"
+export GTK_THEME="Nanite-XFCE-Theme-Dark"
+
+# Execute the real about dialog
+exec /usr/bin/xfce4-about.real "$@"
+EOF
+    chmod +x /usr/bin/xfce4-about
+fi
+
+# Update desktop files that might reference old logos
+echo "I: Updating desktop files..."
+
+find /usr/share/applications -name "*.desktop" -type f -exec sed -i 's|Icon=debian-logo|Icon=nanite-logo|g' {} \; 2>/dev/null || true
+find /usr/share/applications -name "*.desktop" -type f -exec sed -i 's|Icon=distributor-logo|Icon=nanite-logo|g' {} \; 2>/dev/null || true
+
+# Update theme logos
+echo "I: Updating theme branding..."
+
+# Find and replace logos in theme directories
+find /usr/share/themes -name "*.png" -path "*/logos/*" -exec cp "$NANITE_LOGO" {} \; 2>/dev/null || true
+find /usr/share/themes -name "debian*.png" -exec cp "$NANITE_LOGO" {} \; 2>/dev/null || true
+
+# Update icon theme logos
+for theme_dir in /usr/share/icons/*/; do
+    if [ -d "$theme_dir" ]; then
+        for size_dir in "$theme_dir"*/; do
+            if [ -d "$size_dir/apps" ]; then
+                cp "$NANITE_LOGO" "$size_dir/apps/start-here.png" 2>/dev/null || true
+                cp "$NANITE_LOGO" "$size_dir/apps/distributor-logo.png" 2>/dev/null || true
+            fi
+        done
+    fi
+done
+
+# Update GTK icon cache
+echo "I: Updating icon caches..."
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    for icon_theme in /usr/share/icons/*/; do
+        if [ -f "$icon_theme/index.theme" ]; then
+            gtk-update-icon-cache -f "$icon_theme" 2>/dev/null || true
+        fi
+    done
+fi
+
+# Set permissions
+echo "I: Setting proper permissions..."
+find /usr/share/pixmaps -name "*nanite*" -exec chmod 644 {} \;
+find /usr/share/icons -name "*nanite*" -exec chmod 644 {} \;
+find /usr/share/backgrounds -name "*nanite*" -exec chmod 644 {} \;
+
+echo "I: Nanite logo branding completed successfully!"
+echo "   Your beautiful geometric bee logo is now the system logo!"

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Install Nanite
+Name[en_US]=Install Nanite
+Comment=Install Nanite Linux to your computer
+Comment[en_US]=Install Nanite Linux to your computer
+Exec=pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY calamares
+Icon=nanite-logo
+Terminal=false
+StartupNotify=true
+Categories=System;Settings;
+Keywords=install;system;setup;calamares;
+GenericName=System Installer
+GenericName[en_US]=System Installer

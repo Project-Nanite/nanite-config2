@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=nanite-Orange-Dark
+Comment=The nanite Orange Default Theme
+Encoding=UTF-8
+
+
+[X-GNOME-Metatheme]
+GtkTheme=nanite-Orange-Dark
+MetacityTheme=nanite-Orange-Dark
+IconTheme=Flat-Remix-Orange-Dark
+CursorTheme=Adwaita
+ButtonLayout=:minimize,maximize,close

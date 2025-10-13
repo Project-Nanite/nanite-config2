@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xsettings" version="1.0">
+  <!-- GTK Theme Settings -->
+  <property name="Net" type="empty">
+    <property name="ThemeName" type="string" value="nanite-clay"/>
+    <property name="IconThemeName" type="string" value="Papirus"/>
+    <property name="DoubleClickTime" type="uint" value="400"/>
+    <property name="DoubleClickDistance" type="uint" value="5"/>
+    <property name="DndDragThreshold" type="uint" value="8"/>
+    <property name="CursorBlink" type="bool" value="true"/>
+    <property name="CursorBlinkTime" type="uint" value="1200"/>
+    <property name="SoundThemeName" type="string" value="default"/>
+    <property name="EnableEventSounds" type="bool" value="true"/>
+    <property name="EnableInputFeedbackSounds" type="bool" value="false"/>
+  </property>
+
+  <!-- Beautiful typography settings -->
+  <property name="Gtk" type="empty">
+    <property name="CanChangeAccels" type="bool" value="false"/>
+    <property name="ColorPalette" type="string" value="black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"/>
+    <property name="FontName" type="string" value="Inter 10"/>
+    <property name="MonospaceFontName" type="string" value="JetBrains Mono 10"/>
+    <property name="IconSizes" type="string" value=""/>
+    <property name="KeyThemeName" type="string" value=""/>
+    <property name="ToolbarStyle" type="string" value="icons"/>
+    <property name="ToolbarIconSize" type="string" value="small"/>
+    <property name="MenuImages" type="bool" value="true"/>
+    <property name="ButtonImages" type="bool" value="true"/>
+    <property name="MenuBarAccel" type="string" value="F10"/>
+    <property name="CursorThemeName" type="string" value="default"/>
+    <property name="CursorThemeSize" type="uint" value="24"/>
+    <property name="DecorationLayout" type="string" value="close,minimize,maximize:menu"/>
+    <property name="DialogsUseHeader" type="bool" value="true"/>
+    <property name="TitlebarMiddleClick" type="string" value="lower"/>
+  </property>
+
+  <!-- Window Manager Settings -->
+  <property name="Xfwm4" type="empty">
+    <property name="ThemeName" type="string" value="nanite-clay"/>
+    <property name="TitleFont" type="string" value="Inter Bold 10"/>
+    <property name="UseCompositing" type="bool" value="true"/>
+    <property name="ShowCompositorOptions" type="bool" value="true"/>
+    <property name="FrameOpacity" type="uint" value="100"/>
+    <property name="InactiveOpacity" type="uint" value="92"/>
+    <property name="MoveOpacity" type="uint" value="90"/>
+    <property name="PopupOpacity" type="uint" value="95"/>
+    <property name="ResizeOpacity" type="uint" value="85"/>
+    <property name="ShowFrameShadow" type="bool" value="true"/>
+    <property name="ShowPopupShadow" type="bool" value="true"/>
+    <property name="ShowDockShadow" type="bool" value="true"/>
+    <property name="ShadowOpacityActive" type="uint" value="25"/>
+    <property name="ShadowOpacityInactive" type="uint" value="15"/>
+    <property name="ShadowOffsetX" type="int" value="0"/>
+    <property name="ShadowOffsetY" type="int" value="4"/>
+    <property name="ZoomDesktop" type="bool" value="true"/>
+    <property name="ClickToFocus" type="bool" value="true"/>
+    <property name="FocusFollowsMouse" type="bool" value="false"/>
+    <property name="AutoRaise" type="bool" value="false"/>
+    <property name="AutoRaiseDelay" type="int" value="500"/>
+    <property name="RaiseOnFocus" type="bool" value="false"/>
+    <property name="RaiseOnClick" type="bool" value="true"/>
+    <property name="BorderlessMaximize" type="bool" value="true"/>
+    <property name="WrapWindows" type="bool" value="true"/>
+    <property name="WrapWorkspaces" type="bool" value="false"/>
+    <property name="WrapCycle" type="bool" value="true"/>
+    <property name="CycleHidden" type="bool" value="true"/>
+    <property name="CycleMinimum" type="bool" value="true"/>
+    <property name="CyclePreview" type="bool" value="true"/>
+    <property name="CycleTabwinMode" type="int" value="0"/>
+    <property name="DoubleClickAction" type="string" value="maximize"/>
+    <property name="EasyClick" type="string" value="Alt"/>
+    <property name="HoridScrollOpacity" type="bool" value="false"/>
+    <property name="FocusHint" type="bool" value="true"/>
+    <property name="UrgentBlink" type="bool" value="true"/>
+    <property name="SnapToBorder" type="bool" value="true"/>
+    <property name="SnapToWindows" type="bool" value="true"/>
+    <property name="SnapWidth" type="int" value="15"/>
+    <property name="SnapResist" type="bool" value="true"/>
+    <property name="WorkspaceCount" type="int" value="4"/>
+    <property name="WorkspaceNames" type="array">
+      <value type="string" value="Main"/>
+      <value type="string" value="Code"/>
+      <value type="string" value="Web"/>
+      <value type="string" value="Media"/>
+    </property>
+  </property>
+
+  <!-- Panel Appearance -->
+  <property name="Xfce" type="empty">
+    <property name="LastCustomDPI" type="int" value="96"/>
+    <property name="SyncThemes" type="bool" value="true"/>
+  </property>
+
+  <!-- Application-specific settings -->
+  <property name="Gdk" type="empty">
+    <property name="WindowScalingFactor" type="int" value="1"/>
+  </property>
+</channel> 

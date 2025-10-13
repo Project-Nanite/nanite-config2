@@ -1,0 +1,73 @@
+#!/bin/sh
+
+case $LANG in
+	de*)
+		SUMMARY="Screenshot gemacht"
+		BUTTON_TEXT="Bild ansehen"
+		;;
+	es*)
+		SUMMARY="Captura de pantalla tomada"
+		BUTTON_TEXT="Ver imagen"
+		;;
+	fr*)
+		SUMMARY="Capture d'écran prise"
+		BUTTON_TEXT="Voir l'image"
+		;;
+	hr*)
+		SUMMARY="Snimka zaslona snimljena"
+		BUTTON_TEXT="Pogledati sliku"
+		;;
+	it*)
+		SUMMARY="Screenshot acquisito"
+		BUTTON_TEXT="Guarda l'immagine"
+		;;
+	zh*)
+		SUMMARY="截图"
+		BUTTON_TEXT="看图片"
+		;;
+	*)
+		SUMMARY="Screenshot taken"
+		BUTTON_TEXT="View image"
+		;;
+esac
+
+notify() {
+	IMAGE="$1"
+	ACTION_COMMAND="exo-open $IMAGE"
+
+	NOTIFICATION_ID=$(gdbus call \
+		--session \
+		--dest org.freedesktop.Notifications \
+		--object-path /org/freedesktop/Notifications \
+		--method org.freedesktop.Notifications.Notify \
+		'' 0 "$IMAGE" "$SUMMARY" '' \
+		"[\"Open\", \"$BUTTON_TEXT\"]" '{}' 'int32 -1' \
+		| sed 's/(uint32 \([0-9]\+\),)/\1/g')
+
+	GDBUS_MONITOR_PID=/tmp/notify-action-dbus-monitor.$$.pid
+
+	(
+		gdbus monitor --session --dest org.freedesktop.Notifications --object-path /org/freedesktop/Notifications &
+		echo $! >&3
+	) 3>"$GDBUS_MONITOR_PID" | while read -r line; do
+		if echo "$line" | grep "NotificationClosed (uint32 $NOTIFICATION_ID" > /dev/null; then
+			break
+		elif echo "$line" | grep "ActionInvoked (uint32 $NOTIFICATION_ID" > /dev/null; then
+			$ACTION_COMMAND
+			break
+		fi
+	done
+	kill $(cat "$GDBUS_MONITOR_PID")
+	rm "$GDBUS_MONITOR_PID"
+}
+
+paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &
+
+if [ $# -eq 0 ]
+then
+	FILE="Screenshot_$(date +%F_%H_%M_%S).png"
+	xfce4-screenshooter -fs "$(xdg-user-dir PICTURES)/$FILE"
+	notify "$(xdg-user-dir PICTURES)/$FILE"
+else
+	xfce4-screenshooter $@
+fi

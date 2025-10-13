@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "devel@nanite.org",
+                "Name": "nanite Devel Team"
+            }
+        ],
+        "Id": "nanite",
+        "Name": "nanite",
+        "License": "GPL-3.0+"
+    }
+}

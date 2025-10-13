@@ -1,0 +1,62 @@
+#------------------------------- Constants -----------------------------------------
+LOGO_POSITION = "center";   # options: "center", "top-center", "bottom-center", "bottom-left"
+
+#----------------------------- Screen/window setup ---------------------------
+window_max.width = Window.GetWidth();
+window_max.height = Window.GetHeight();
+
+# Background: pure black
+Window.SetBackgroundTopColor (0.0, 0.0, 0.0);
+Window.SetBackgroundBottomColor (0.0, 0.0, 0.0);
+
+#---------------------------- Logo Placement ---------------------------------
+fun calcfmt(logo_base) {
+    x0 = Window.GetWidth();
+    y0 = Window.GetHeight();
+    xlogo = logo_base.GetWidth();
+    ylogo = logo_base.GetHeight();
+    
+    logoscale = 0.2;  # scale factor (20% of screen width)
+    if (xlogo < logoscale*x0) {
+        dim.logo.xsize = xlogo;
+        dim.logo.ysize = ylogo;
+    } else {
+        dim.logo.xsize = logoscale*x0;
+        dim.logo.ysize = (logoscale*x0/xlogo)*ylogo;
+    }
+
+    if (LOGO_POSITION == "center") {
+        dim.logo.x = (x0 - dim.logo.xsize) / 2;
+        dim.logo.y = (y0 - dim.logo.ysize) / 2;
+    }
+    else if (LOGO_POSITION == "top-center") {
+        dim.logo.x = (x0 - dim.logo.xsize) / 2;
+        dim.logo.y = 0.05*y0;
+    }
+    else if (LOGO_POSITION == "bottom-center") {
+        dim.logo.x = (x0 - dim.logo.xsize) / 2;
+        dim.logo.y = y0 - dim.logo.ysize - 0.05*y0;
+    }
+    else {  # default bottom-left
+        dim.logo.x = 0.01*x0;
+        dim.logo.y = y0 - dim.logo.ysize - 0.01*y0;
+    }
+
+    return dim;
+}
+
+#---------------------------- Load & Show Logo --------------------------------
+logo = Image("nanite-logo.png");
+logodim = calcfmt(logo);
+logo = logo.Scale(logodim.logo.xsize, logodim.logo.ysize);
+logo_sprite = Sprite(logo);
+logo_sprite.SetPosition(logodim.logo.x, logodim.logo.y, 0);
+
+#---------------------------- Plymouth Hooks ---------------------------------
+fun refresh_callback() {
+    # nothing animated, just keep screen refreshed
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun quit_callback() {}
+Plymouth.SetQuitFunction(quit_callback);

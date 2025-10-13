@@ -1,0 +1,16 @@
+Package: nanite-branding
+Version: 1.0.0
+Architecture: all
+Maintainer: Nanite Team <team@nanite.org>
+Depends: xfce4-settings, xfdesktop4
+Priority: optional
+Section: x11
+Description: Nanite Distribution Branding Package
+ This package provides custom branding for the Nanite distribution,
+ including custom wallpaper and distribution logo.
+ .
+ Features:
+  * Custom Nanite wallpaper
+  * Distribution logo
+  * XFCE desktop configuration
+  * Automatic wallpaper and logo application

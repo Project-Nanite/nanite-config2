@@ -1,0 +1,137 @@
+#!/bin/bash
+
+# Nanite Linux Setup Verification Script
+# This script verifies all components are properly configured
+
+echo "=========================================="
+echo "    Nanite Linux Setup Verification"
+echo "=========================================="
+echo ""
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to check file existence
+check_file() {
+    local file="$1"
+    local description="$2"
+    
+    if [ -f "$file" ]; then
+        echo -e "${GREEN}✓${NC} $description: $file"
+        return 0
+    else
+        echo -e "${RED}✗${NC} $description: $file (MISSING)"
+        return 1
+    fi
+}
+
+# Function to check directory existence
+check_dir() {
+    local dir="$1"
+    local description="$2"
+    
+    if [ -d "$dir" ]; then
+        echo -e "${GREEN}✓${NC} $description: $dir"
+        return 0
+    else
+        echo -e "${RED}✗${NC} $description: $dir (MISSING)"
+        return 1
+    fi
+}
+
+echo -e "${BLUE}1. GRUB Configuration${NC}"
+echo "-------------------"
+check_file "/etc/default/grub.d/nanite.cfg" "Main GRUB config"
+check_file "/etc/default/grub.d/nanite-live.cfg" "Live GRUB config"
+check_file "/etc/grub.d/40_custom" "GRUB custom menu"
+check_file "/usr/share/grub/themes/nanite/theme.txt" "GRUB theme"
+check_file "/usr/share/backgrounds/nanite-grub.png" "GRUB background"
+check_dir "/usr/share/grub/themes/nanite" "GRUB theme directory"
+
+echo ""
+echo -e "${BLUE}2. Firefox Configuration${NC}"
+echo "------------------------"
+check_file "/etc/skel/.mozilla/firefox/nanite.default/user.js" "Firefox user prefs"
+check_file "/etc/skel/.mozilla/firefox/nanite.default/chrome/userChrome.css" "Firefox theme"
+check_file "/etc/skel/.mozilla/firefox/nanite.default/bookmarks.json" "Firefox bookmarks"
+check_file "/etc/skel/.mozilla/firefox/profiles.ini" "Firefox profiles"
+check_file "/usr/share/backgrounds/firefox-bg.png" "Firefox background"
+
+echo ""
+echo -e "${BLUE}3. Desktop Environment${NC}"
+echo "------------------------"
+check_file "/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" "XFCE system config"
+check_file "/etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" "XFCE user config"
+check_file "/usr/share/backgrounds/wallpaper.png" "Desktop wallpaper"
+
+echo ""
+echo -e "${BLUE}4. Calamares Configuration${NC}"
+echo "----------------------------"
+check_file "/etc/calamares/branding/nanite/branding.desc" "Calamares branding"
+check_file "/etc/calamares/branding/nanite/modules/packages.conf" "Calamares packages"
+check_file "/usr/share/calamares/branding/nanite/slideshow/slideshow.qml" "Calamares slideshow"
+
+echo ""
+echo -e "${BLUE}5. Live Environment Hooks${NC}"
+echo "----------------------------"
+check_file "/usr/local/bin/check-live-and-launch" "Live detection script"
+check_file "/usr/local/bin/nanite-calamares-launcher" "Calamares launcher"
+check_file "/usr/local/bin/apply-nanite-wallpaper" "Wallpaper script"
+check_file "/usr/local/bin/update-nanite-grub" "GRUB update script"
+check_file "/usr/local/bin/verify-grub-theme" "GRUB verification script"
+
+echo ""
+echo -e "${BLUE}6. System Services${NC}"
+echo "-------------------"
+if systemctl is-enabled nanite-calamares-autostart.service >/dev/null 2>&1; then
+    echo -e "${GREEN}✓${NC} Calamares autostart service: ENABLED"
+else
+    echo -e "${YELLOW}⚠${NC} Calamares autostart service: NOT ENABLED"
+fi
+
+if systemctl is-enabled nanite-wallpaper.service >/dev/null 2>&1; then
+    echo -e "${GREEN}✓${NC} Wallpaper service: ENABLED"
+else
+    echo -e "${YELLOW}⚠${NC} Wallpaper service: NOT ENABLED"
+fi
+
+echo ""
+echo -e "${BLUE}7. Permissions Check${NC}"
+echo "---------------------"
+if [ -x "/etc/grub.d/40_custom" ]; then
+    echo -e "${GREEN}✓${NC} GRUB custom menu: EXECUTABLE"
+else
+    echo -e "${RED}✗${NC} GRUB custom menu: NOT EXECUTABLE"
+fi
+
+if [ -x "/usr/local/bin/check-live-and-launch" ]; then
+    echo -e "${GREEN}✓${NC} Live detection script: EXECUTABLE"
+else
+    echo -e "${RED}✗${NC} Live detection script: NOT EXECUTABLE"
+fi
+
+echo ""
+echo "=========================================="
+echo -e "${BLUE}Setup Verification Complete!${NC}"
+echo "=========================================="
+echo ""
+echo -e "${YELLOW}Next Steps:${NC}"
+echo "1. Replace placeholder images with actual images:"
+echo "   - /usr/share/backgrounds/wallpaper.png"
+echo "   - /usr/share/backgrounds/nanite-grub.png"
+echo "   - /usr/share/backgrounds/firefox-bg.png"
+echo ""
+echo "2. Test the live environment:"
+echo "   - Boot from USB/DVD"
+echo "   - Verify GRUB menu appears"
+echo "   - Check Calamares auto-launches"
+echo "   - Verify Firefox opens with custom settings"
+echo ""
+echo "3. Build the live image:"
+echo "   - Run: lb build"
+echo "   - Test the generated ISO"
+echo ""

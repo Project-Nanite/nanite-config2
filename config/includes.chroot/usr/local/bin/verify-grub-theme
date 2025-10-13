@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Verify GRUB theme installation
+echo "Verifying GRUB theme installation..."
+
+THEME_DIR="/usr/share/grub/themes/nanite"
+BACKGROUND="/usr/share/backgrounds/nanite-grub.png"
+
+if [ -f "$THEME_DIR/theme.txt" ]; then
+    echo "✓ GRUB theme file found: $THEME_DIR/theme.txt"
+else
+    echo "✗ GRUB theme file missing: $THEME_DIR/theme.txt"
+fi
+
+if [ -f "$BACKGROUND" ]; then
+    echo "✓ GRUB background image found: $BACKGROUND"
+else
+    echo "✗ GRUB background image missing: $BACKGROUND"
+fi
+
+if [ -f "/etc/grub.d/40_custom" ]; then
+    echo "✓ GRUB custom menu found: /etc/grub.d/40_custom"
+else
+    echo "✗ GRUB custom menu missing: /etc/grub.d/40_custom"
+fi
+
+echo "GRUB theme verification completed!"

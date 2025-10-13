@@ -1,0 +1,199 @@
+#!/bin/bash
+
+# XFCE Nanite Branding Hook
+# Configure XFCE to show Nanite logo and information in About dialog
+
+set -e
+
+echo "I: Configuring XFCE for Nanite branding..."
+
+# Create XFCE4 configuration directories
+mkdir -p /etc/xdg/xfce4/xfconf/xfce-perchannel-xml
+mkdir -p /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml
+
+# Configure XFCE to use Nanite logo in About dialog
+cat > /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-session" version="1.0">
+  <property name="general" type="empty">
+    <property name="FailsafeSessionName" type="string" value="Failsafe"/>
+    <property name="SessionName" type="string" value="Default"/>
+    <property name="SaveOnExit" type="bool" value="true"/>
+  </property>
+  <property name="sessions" type="empty">
+    <property name="Failsafe" type="empty">
+      <property name="IsFailsafe" type="bool" value="true"/>
+      <property name="Count" type="int" value="5"/>
+      <property name="Client0_Command" type="array">
+        <value type="string" value="xfwm4"/>
+      </property>
+      <property name="Client0_PerScreen" type="bool" value="false"/>
+      <property name="Client1_Command" type="array">
+        <value type="string" value="xfce4-panel"/>
+      </property>
+      <property name="Client1_PerScreen" type="bool" value="false"/>
+      <property name="Client2_Command" type="array">
+        <value type="string" value="thunar"/>
+        <value type="string" value="--daemon"/>
+      </property>
+      <property name="Client2_PerScreen" type="bool" value="false"/>
+      <property name="Client3_Command" type="array">
+        <value type="string" value="xfdesktop"/>
+      </property>
+      <property name="Client3_PerScreen" type="bool" value="false"/>
+      <property name="Client4_Command" type="array">
+        <value type="string" value="xfce4-session"/>
+        <value type="string" value="--logout"/>
+      </property>
+      <property name="Client4_PerScreen" type="bool" value="false"/>
+    </property>
+  </property>
+  <property name="compat" type="empty">
+    <property name="LaunchGNOME" type="bool" value="true"/>
+  </property>
+  <property name="security" type="empty">
+    <property name="EnableTcp" type="bool" value="false"/>
+  </property>
+</channel>
+EOF
+
+# Copy to user skeleton
+cp /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/
+
+# Update XFCE desktop settings to use Nanite logo
+cat > /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitor0" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/wallpaper.png"/>
+        </property>
+        <property name="workspace1" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/wallpaper.png"/>
+        </property>
+        <property name="workspace2" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/wallpaper.png"/>
+        </property>
+        <property name="workspace3" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/wallpaper.png"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="desktop-icons" type="empty">
+    <property name="style" type="int" value="2"/>
+    <property name="file-icons" type="empty">
+      <property name="show-filesystem" type="bool" value="false"/>
+      <property name="show-home" type="bool" value="false"/>
+      <property name="show-trash" type="bool" value="false"/>
+      <property name="show-removable" type="bool" value="false"/>
+    </property>
+  </property>
+</channel>
+EOF
+
+# Copy to user skeleton  
+cp /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/
+
+# Create custom XFCE About dialog configuration
+mkdir -p /usr/share/xfce4/helpers
+
+# Override XFCE system information
+echo "I: Setting up XFCE system information override..."
+
+# Create a custom script for XFCE About dialog
+cat > /usr/local/bin/xfce-about-nanite << 'EOF'
+#!/bin/bash
+
+# Custom XFCE About dialog for Nanite
+export GTK_THEME="Nanite-XFCE-Theme-Dark"
+
+# Set the distributor logo
+export XFCE_DISTRIBUTOR_LOGO="/usr/share/pixmaps/nanite-logo.png"
+
+# Override system information
+export DISTRIB_ID="Nanite"
+export DISTRIB_DESCRIPTION="Nanite Linux"
+
+# Launch the about dialog with custom environment
+exec /usr/bin/xfce4-about "$@"
+EOF
+
+chmod +x /usr/local/bin/xfce-about-nanite
+
+# Create desktop file for custom about dialog
+cat > /usr/share/applications/xfce4-about-nanite.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=About Nanite Desktop
+Comment=Information about the Nanite Desktop Environment
+Icon=nanite-logo
+Exec=xfce-about-nanite
+NoDisplay=true
+StartupNotify=true
+Categories=System;Core;
+OnlyShowIn=XFCE;
+EOF
+
+# Update existing XFCE about dialog
+if [ -f /usr/share/applications/xfce4-about.desktop ]; then
+    sed -i 's|Exec=xfce4-about|Exec=xfce-about-nanite|g' /usr/share/applications/xfce4-about.desktop
+    sed -i 's|Icon=.*|Icon=nanite-logo|g' /usr/share/applications/xfce4-about.desktop
+fi
+
+# Ensure Nanite logo is available in all icon themes used by XFCE
+echo "I: Updating XFCE icon themes..."
+
+# Copy logo to standard XFCE locations
+if [ -f /usr/share/pixmaps/nanite-logo.png ]; then
+    # Copy to various XFCE-specific locations
+    mkdir -p /usr/share/xfce4/backdrops
+    cp /usr/share/pixmaps/nanite-logo.png /usr/share/xfce4/backdrops/
+    
+    # Update icon themes
+    for theme in hicolor Adwaita gnome Nanite-Icons; do
+        theme_dir="/usr/share/icons/$theme"
+        if [ -d "$theme_dir" ]; then
+            for size in 16 22 24 32 48 64 96 128 256 512; do
+                size_dir="$theme_dir/${size}x${size}/apps"
+                if [ -d "$size_dir" ]; then
+                    cp /usr/share/pixmaps/nanite-logo.png "$size_dir/nanite-logo.png" 2>/dev/null || true
+                    cp /usr/share/pixmaps/nanite-logo.png "$size_dir/distributor-logo.png" 2>/dev/null || true
+                    cp /usr/share/pixmaps/nanite-logo.png "$size_dir/start-here.png" 2>/dev/null || true
+                fi
+            done
+        fi
+    done
+fi
+
+# Override GTK/GDK pixbuf loaders for distributor logo
+echo "I: Setting up GTK logo override..."
+mkdir -p /etc/gtk-3.0
+cat > /etc/gtk-3.0/settings.ini << 'EOF'
+[Settings]
+gtk-icon-theme-name=Nanite-Icons
+gtk-theme-name=Nanite-XFCE-Theme-Dark
+gtk-application-prefer-dark-theme=true
+EOF
+
+# Set up environment variables for Nanite branding
+cat > /etc/environment.d/90-nanite-branding.conf << 'EOF'
+DISTRIB_ID=Nanite
+DISTRIB_DESCRIPTION="Nanite Linux"
+XFCE_DISTRIBUTOR_LOGO=/usr/share/pixmaps/nanite-logo.png
+EOF
+
+echo "I: XFCE Nanite branding configuration completed!"

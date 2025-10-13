@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Nanite Modern
+Comment=Clean, modern theme with excellent contrast and readability
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=nanite-modern
+MetacityTheme=nanite-modern
+IconTheme=Papirus
+CursorTheme=default
+ButtonLayout=close,minimize,maximize:menu
+
+[Desktop Entry]
+Name=Nanite Modern
+Comment=Clean, modern theme with excellent contrast and readability
+Type=X-GNOME-Metatheme
+Version=1.0

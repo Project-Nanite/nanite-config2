@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitor0" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-show" type="bool" value="true"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/default.png"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/default.png"/>
+        </property>
+        <property name="workspace1" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-show" type="bool" value="true"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/default.png"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/default.png"/>
+        </property>
+        <property name="workspace2" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-show" type="bool" value="true"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/default.png"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/default.png"/>
+        </property>
+        <property name="workspace3" type="empty">
+          <property name="color-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="5"/>
+          <property name="image-show" type="bool" value="true"/>
+          <property name="image-path" type="string" value="/usr/share/backgrounds/default.png"/>
+          <property name="last-image" type="string" value="/usr/share/backgrounds/default.png"/>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="desktop-icons" type="empty">
+    <property name="file-icons" type="empty">
+      <property name="show-home" type="bool" value="true"/>
+      <property name="show-trash" type="bool" value="true"/>
+      <property name="show-removable" type="bool" value="true"/>
+    </property>
+    <property name="show-thumbnails" type="bool" value="true"/>
+    <property name="show-filename" type="bool" value="true"/>
+    <property name="use-custom-font-size" type="bool" value="false"/>
+    <property name="size" type="uint" value="48"/>
+    <property name="tooltip-size" type="uint" value="160"/>
+    <property name="font-size" type="uint" value="12"/>
+    <property name="show-hidden" type="bool" value="false"/>
+    <property name="sort-mode" type="uint" value="0"/>
+    <property name="show-drop-place" type="bool" value="true"/>
+    <property name="drop-place" type="bool" value="false"/>
+    <property name="use-custom-font" type="bool" value="false"/>
+    <property name="font" type="string" value="Sans 12"/>
+  </property>
+</channel>

@@ -1,0 +1,45 @@
+#!/bin/bash
+# XFCE wallpaper hook
+
+WALLPAPER="/usr/share/backgrounds/default.png"
+CONFIG_DIR=".config/xfce4/xfconf/xfce-perchannel-xml"
+CONFIG_FILE="xfce4-desktop.xml"
+
+# Find live user (first UID >= 1000)
+LIVEUSER=$(awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' /etc/passwd | head -n1)
+
+echo "Setting default wallpaper for XFCE..."
+
+# Ensure wallpaper exists
+if [ ! -f "$WALLPAPER" ]; then
+    echo "ERROR: Wallpaper not found at $WALLPAPER"
+    exit 1
+fi
+
+# Build XFCE wallpaper XML
+mkdir -p "/home/$LIVEUSER/$CONFIG_DIR"
+
+cat > "/home/$LIVEUSER/$CONFIG_DIR/$CONFIG_FILE" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-desktop" version="1.0">
+  <property name="backdrop" type="empty">
+    <property name="screen0" type="empty">
+      <property name="monitor0" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="last-image" type="string" value="$WALLPAPER"/>
+          <property name="image-style" type="int" value="3"/>
+        </property>
+      </property>
+    </property>
+  </property>
+</channel>
+EOF
+
+# Fix permissions
+chown -R $LIVEUSER:$LIVEUSER "/home/$LIVEUSER/$CONFIG_DIR"
+
+# Reload XFCE desktop if session is active
+sudo -u $LIVEUSER xfdesktop --reload 2>/dev/null || true
+
+echo "Wallpaper applied for user: $LIVEUSER"
+echo "Default wallpaper: $WALLPAPER"

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=About Nanite
+Comment=Information about Nanite Linux
+Exec=zenity --info --title="About Nanite Linux" --text="Nanite Linux 1.0\nA Beautiful AI/ML Distribution\n\nWebsite: https://nanite.software\nSupport: https://nanite.software/support"
+Icon=nanite-logo
+Terminal=false
+Categories=System;

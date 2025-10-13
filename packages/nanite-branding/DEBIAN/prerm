@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+# Restore default Debian logo if it exists
+if [ -f /usr/share/pixmaps/debian-logo.png.backup ]; then
+    mv /usr/share/pixmaps/debian-logo.png.backup /usr/share/pixmaps/debian-logo.png
+fi
+
+if [ -f /usr/share/plymouth/debian-logo.png.backup ]; then
+    mv /usr/share/plymouth/debian-logo.png.backup /usr/share/plymouth/debian-logo.png
+fi
+
+# Restore default lsb-release if backup exists
+if [ -f /etc/lsb-release.backup ]; then
+    mv /etc/lsb-release.backup /etc/lsb-release
+fi
+
+echo "Nanite branding package removed. Default Debian branding restored."

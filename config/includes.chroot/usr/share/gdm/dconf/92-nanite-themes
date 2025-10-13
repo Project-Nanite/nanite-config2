@@ -1,0 +1,8 @@
+# Ask gdm to display our logo (even when nanite-desktop-base is not here)
+# Also overrides the broken stuff in /usr/share/gdm/dconf/91-nanite-settings
+# from nanite-root-login.
+
+# Login manager options
+# =====================
+[org/gnome/login-screen]
+logo='/usr/share/images/nanite-logos/logo-text-128.png'

@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Force Auto-login in Live Environment
+# This hook ensures the nanite user is automatically logged in
+
+echo "I: Forcing auto-login configuration for live environment..."
+
+# Override any existing LightDM config with our auto-login settings
+cat > /lib/live/config/1170-lightdm << 'EOF'
+#!/bin/sh
+
+set -e
+
+# Configure LightDM for auto-login
+if [ -x /usr/sbin/lightdm ]; then
+    # Force auto-login settings
+    cat > /etc/lightdm/lightdm.conf << 'LIGHTDM_EOF'
+[LightDM]
+run-directory=/run/lightdm
+
+[Seat:*]
+greeter-session=lightdm-gtk-greeter
+user-session=xfce
+autologin-user=nanite
+autologin-user-timeout=0
+autologin-session=xfce
+LIGHTDM_EOF
+
+    # Enable lightdm
+    systemctl enable lightdm || true
+fi
+EOF
+
+chmod +x /lib/live/config/1170-lightdm
+
+# Create a script that bypasses login completely if needed
+cat > /usr/local/bin/nanite-force-login << 'EOF'
+#!/bin/bash
+# Emergency auto-login script
+
+export USER="nanite"
+export HOME="/home/nanite"
+export SHELL="/bin/bash"
+export LOGNAME="nanite"
+
+# Kill any existing login managers
+pkill -f lightdm 2>/dev/null || true
+pkill -f gdm 2>/dev/null || true
+
+# Wait a moment
+sleep 2
+
+# Start X directly as nanite user
+sudo -u nanite DISPLAY=:0 /usr/bin/startx /usr/bin/startxfce4 -- :0 vt7 -auth /home/nanite/.Xauthority &
+
+echo "Nanite auto-login forced"
+EOF
+
+chmod +x /usr/local/bin/nanite-force-login
+
+# Create a systemd service that runs if login fails
+cat > /etc/systemd/system/nanite-emergency-login.service << 'EOF'
+[Unit]
+Description=Nanite Emergency Auto Login
+After=lightdm.service
+Wants=lightdm.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/local/bin/nanite-force-login
+Restart=no
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+# Don't enable this by default, only if needed
+# systemctl enable nanite-emergency-login.service
+
+echo "I: Live auto-login override configured"

@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# Direct Desktop Boot for Nanite
+# Bypass login manager completely for live environment
+
+echo "I: Setting up direct desktop boot (no login manager)..."
+
+# Create a systemd service that starts XFCE directly
+cat > /etc/systemd/system/nanite-direct-desktop.service << 'EOF'
+[Unit]
+Description=Nanite Direct Desktop Boot
+After=multi-user.target
+Conflicts=lightdm.service gdm.service
+
+[Service]
+Type=simple
+User=nanite
+Group=nanite
+Environment=HOME=/home/nanite
+Environment=USER=nanite
+Environment=LOGNAME=nanite
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=DISPLAY=:0
+WorkingDirectory=/home/nanite
+ExecStartPre=/bin/bash -c 'mkdir -p /run/user/1000 && chown nanite:nanite /run/user/1000'
+ExecStartPre=/usr/bin/X :0 -nolisten tcp vt7 -auth /home/nanite/.Xauthority &
+ExecStartPre=/bin/sleep 3
+ExecStart=/usr/bin/startxfce4
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+# Create alternative method using getty auto-login to X
+cat > /etc/systemd/system/nanite-autologin-x.service << 'EOF'
+[Unit]
+Description=Nanite Auto Login to X
+After=systemd-user-sessions.service plymouth-quit-wait.service
+Wants=systemd-user-sessions.service plymouth-quit-wait.service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'chvt 7; sleep 2; sudo -u nanite startx /usr/bin/startxfce4 -- :0 vt7'
+StandardOutput=journal
+StandardError=journal
+TTYPath=/dev/tty7
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+# Disable conflicting services
+systemctl disable lightdm 2>/dev/null || true
+systemctl disable gdm 2>/dev/null || true
+systemctl disable gdm3 2>/dev/null || true
+
+# Enable our direct boot service (comment out to use alternative)
+systemctl enable nanite-autologin-x.service 2>/dev/null || true
+
+# Create .xsession for nanite user
+cat > /home/nanite/.xsession << 'EOF'
+#!/bin/bash
+exec /usr/bin/startxfce4
+EOF
+
+chmod +x /home/nanite/.xsession
+chown nanite:nanite /home/nanite/.xsession
+
+# Ensure X11 permissions
+cat > /etc/X11/Xwrapper.config << 'EOF'
+allowed_users=anybody
+needs_root_rights=yes
+EOF
+
+# Create startx configuration
+cat > /home/nanite/.xinitrc << 'EOF'
+#!/bin/sh
+# Ensure proper environment
+export USER=nanite
+export HOME=/home/nanite
+export SHELL=/bin/bash
+
+# Start XFCE
+exec /usr/bin/startxfce4
+EOF
+
+chmod +x /home/nanite/.xinitrc
+chown nanite:nanite /home/nanite/.xinitrc
+
+echo "I: Direct desktop boot configured"
+echo "   System will boot directly to XFCE desktop as nanite user"

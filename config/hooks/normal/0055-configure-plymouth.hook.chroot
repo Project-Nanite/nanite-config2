@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Configure Plymouth for Nanite Live Boot
+# This hook sets up the ceratopsian theme and ensures Plymouth is properly configured
+
+# set -e removed to prevent failure on missing Plymouth components
+
+echo "I: Configuring Plymouth with ceratopsian theme..."
+
+# Enable Plymouth in systemd (only if services exist)
+systemctl enable plymouth-start.service 2>/dev/null || echo "W: plymouth-start.service not found"
+systemctl enable plymouth-read-write.service 2>/dev/null || echo "W: plymouth-read-write.service not found"
+systemctl enable plymouth-quit.service 2>/dev/null || echo "W: plymouth-quit.service not found"
+systemctl enable plymouth-quit-wait.service 2>/dev/null || echo "W: plymouth-quit-wait.service not found"
+
+# Create plymouth directories if they don't exist
+mkdir -p /etc/plymouth
+mkdir -p /usr/share/plymouth/themes
+
+# Set the default Plymouth theme to ceratopsian
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    plymouth-set-default-theme ceratopsian || echo "W: Could not set Plymouth theme"
+else
+    echo "W: plymouth-set-default-theme command not found"
+fi
+
+# Update initramfs to include Plymouth
+if command -v update-initramfs >/dev/null 2>&1; then
+    echo "I: Updating initramfs with Plymouth configuration..."
+    update-initramfs -u
+fi
+
+# Ensure Plymouth configuration is properly set
+if [ -f /etc/plymouth/plymouthd.conf ]; then
+    # Update existing config
+    sed -i 's/^Theme=.*/Theme=ceratopsian/' /etc/plymouth/plymouthd.conf
+    sed -i 's/^ShowDelay=.*/ShowDelay=0/' /etc/plymouth/plymouthd.conf
+    sed -i 's/^DeviceTimeout=.*/DeviceTimeout=8/' /etc/plymouth/plymouthd.conf
+else
+    # Create config file
+    cat > /etc/plymouth/plymouthd.conf << EOF
+[Daemon]
+Theme=ceratopsian
+ShowDelay=0
+DeviceTimeout=8
+EOF
+fi
+
+# Ensure the ceratopsian theme is available and properly linked
+if [ -d /usr/share/plymouth/themes/ceratopsian ]; then
+    echo "I: Ceratopsian theme directory found"
+    ls -la /usr/share/plymouth/themes/ceratopsian/
+else
+    echo "W: Ceratopsian theme directory not found in /usr/share/plymouth/themes/"
+fi
+
+# Test Plymouth configuration
+echo "I: Testing Plymouth configuration..."
+if command -v plymouth >/dev/null 2>&1; then
+    plymouth --help >/dev/null 2>&1 && echo "I: Plymouth command available"
+fi
+
+echo "I: Plymouth configuration completed"

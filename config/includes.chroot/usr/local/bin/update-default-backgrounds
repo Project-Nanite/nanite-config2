@@ -1,0 +1,34 @@
+#!/bin/sh
+
+DESTDIR=share/desktop-base/nanite-theme
+DESKTOP_BACKGROUND=$(echo $1 | sed 's/\..\+//')
+DESKTOP_BACKGROUND_EXTENSION=$(echo $1 | grep -o '\..\+')
+DESKTOP_BACKGROUND_PURPLE=$(echo $2 | sed 's/\..\+//')
+DESKTOP_BACKGROUND_PURPLE_EXTENSION=$(echo $2 | grep -o '\..\+')
+LOGIN_BACKGROUND=$(echo $3 | sed 's/\..\+//')
+LOGIN_BACKGROUND_EXTENSION=$(echo $3 | grep -o '\..\+')
+
+# login/lockscreen
+ln -sfv ../../../backgrounds/nanite/${LOGIN_BACKGROUND}.xml ${DESTDIR}/lockscreen/gnome-background.xml
+ln -sfv ../../../backgrounds/nanite/${LOGIN_BACKGROUND}-16x9${LOGIN_BACKGROUND_EXTENSION} ${DESTDIR}/login/background
+
+# KDE background
+kde_wallpaper=$(echo ${DESKTOP_BACKGROUND} | sed -E 's/(^|-)([a-z])/\U\2/g')
+kde_wallpaper_purple=$(echo ${DESKTOP_BACKGROUND_PURPLE} | sed -E 's/(^|-)([a-z])/\U\2/g')
+ln -sfv ../../../backgrounds/nanite/${DESKTOP_BACKGROUND}.xml ${DESTDIR}/wallpaper/gnome-background.xml
+ln -sfv ../../../backgrounds/nanite/${DESKTOP_BACKGROUND_PURPLE}.xml ${DESTDIR}/wallpaper/gnome-background-purple.xml
+ln -nsfv ../../../wallpapers/${kde_wallpaper}/contents ${DESTDIR}/wallpaper/contents
+sed -i "s/defaultWallpaperTheme=.*/defaultWallpaperTheme=${kde_wallpaper}/" share/plasma/desktoptheme/nanite/plasmarc
+sed -i "s/defaultFileSuffix=.*/defaultFileSuffix=${DESKTOP_BACKGROUND_EXTENSION}/" share/plasma/desktoptheme/nanite/plasmarc
+sed -i "s/defaultWallpaperTheme=.*/defaultWallpaperTheme=${kde_wallpaper_purple}/" share/plasma/desktoptheme/nanite-purple/plasmarc
+sed -i "s/defaultFileSuffix=.*/defaultFileSuffix=${DESKTOP_BACKGROUND_PURPLE_EXTENSION}/" share/plasma/desktoptheme/nanite-purple/plasmarc
+sed -i "s/Image=.*/Image=${kde_wallpaper}/" share/plasma/look-and-feel/org.nanite.Nanitedark.desktop/contents/defaults
+sed -i "s/Image=.*/Image=${kde_wallpaper}/" share/plasma/look-and-feel/org.nanite.Nanitelight.desktop/contents/defaults
+sed -i "s/Image=.*/Image=${kde_wallpaper_purple}/" share/plasma/look-and-feel/org.nanite.Nanitepurpledark.desktop/contents/defaults
+sed -i "s/Image=.*/Image=${kde_wallpaper_purple}/" share/plasma/look-and-feel/org.nanite.Nanitepurplelight.desktop/contents/defaults
+
+# XFCE background
+mkdir -p share/backgrounds/nanite-16x9
+ln -sfv "${DESKTOP_BACKGROUND}${DESKTOP_BACKGROUND_EXTENSION}" share/backgrounds/nanite-16x9/default
+## nanite Purple
+sed -i "s/BACKGROUND_PURPLE=.*/BACKGROUND_PURPLE=${DESKTOP_BACKGROUND_PURPLE}${DESKTOP_BACKGROUND_PURPLE_EXTENSION}/" debian/nanite-themes-purple.postinst

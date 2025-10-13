@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# Zsh Live Environment Setup Hook
+# Ensure nanite user has zsh properly configured in live environment
+
+echo "I: Setting up zsh for live environment..."
+
+# Ensure nanite user gets zsh setup
+if id nanite >/dev/null 2>&1; then
+    echo "I: Configuring zsh for nanite user in live environment..."
+    
+    # Set zsh as default shell for nanite user
+    chsh -s /bin/zsh nanite 2>/dev/null || true
+    
+    # Set up zsh configuration for nanite user
+    /usr/local/bin/setup-user-zsh nanite 2>/dev/null || true
+    
+    # Ensure .zshrc exists and has proper ownership
+    if [ -f "/home/nanite/.zshrc" ]; then
+        chown nanite:nanite /home/nanite/.zshrc
+        chmod 644 /home/nanite/.zshrc
+    fi
+    
+    # Create .oh-my-zsh directory with proper permissions
+    if [ -d "/home/nanite/.oh-my-zsh" ]; then
+        chown -R nanite:nanite /home/nanite/.oh-my-zsh
+    fi
+    
+    # Set up zsh history file
+    touch /home/nanite/.zsh_history
+    chown nanite:nanite /home/nanite/.zsh_history
+    chmod 600 /home/nanite/.zsh_history
+    
+    echo "I: Zsh configuration completed for live environment"
+else
+    echo "W: Nanite user not found for zsh setup"
+fi
+
+# Ensure terminal emulator opens zsh by default
+echo "I: Configuring terminal to use zsh..."
+
+# Configure xfce4-terminal to use zsh
+mkdir -p /home/nanite/.config/xfce4/terminal
+cat > /home/nanite/.config/xfce4/terminal/terminalrc << 'EOF'
+[Configuration]
+CommandLoginShell=TRUE
+DefaultGeometry=80x24
+DefaultWorkingDir=
+FontName=Monospace 11
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE
+MiscBellUrgent=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=FALSE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+MiscDefaultGeometry=80x24
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=TRUE
+MiscMouseAutohide=FALSE
+MiscMouseWheelZoom=TRUE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+MiscMiddleClickOpensUri=FALSE
+MiscCopyOnSelect=FALSE
+MiscShowRelaunchDialog=TRUE
+MiscRewrapOnResize=TRUE
+MiscUseShiftArrowsToScroll=FALSE
+MiscSlimTabs=FALSE
+MiscNewTabAdjacent=FALSE
+MiscSearchDialogOpacity=100
+MiscShowUnsafePasteDialog=TRUE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.900000
+ColorCursor=#ffffff
+ColorForeground=#ffffff
+ColorBackground=#1e1e1e
+ColorPalette=#000000;#cd0000;#00cd00;#cdcd00;#0000ee;#cd00cd;#00cdcd;#e5e5e5;#7f7f7f;#ff0000;#00ff00;#ffff00;#5c5cff;#ff00ff;#00ffff;#ffffff
+RunCustomCommand=TRUE
+CustomCommand=zsh
+EOF
+
+chown -R nanite:nanite /home/nanite/.config 2>/dev/null || true
+
+echo "I: Live environment zsh setup completed!"

@@ -1,0 +1,111 @@
+#!/bin/bash
+set -e
+
+# Apply wallpaper to all users
+WALLPAPER_PATH="/usr/share/backgrounds/nanite/wallpaper.png"
+LOGO_PATH="/usr/share/pixmaps/distributor-logo.png"
+
+# Create XFCE desktop configuration for new users
+mkdir -p /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml
+
+# Create xfce4-desktop.xml for new users
+cat > /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-desktop" version="1.0">
+  <property name="desktop-icons" type="empty">
+    <property name="file-icons" type="empty">
+      <property name="show-home" type="bool" value="false"/>
+      <property name="show-trash" type="bool" value="false"/>
+      <property name="show-removable" type="bool" value="false"/>
+    </property>
+    <property name="show-thumbnails" type="bool" value="true"/>
+    <property name="show-filename" type="bool" value="true"/>
+    <property name="use-custom-font-size" type="bool" value="false"/>
+    <property name="size" type="uint" value="48"/>
+    <property name="tooltip-size" type="uint" value="160"/>
+    <property name="font-size" type="uint" value="12"/>
+    <property name="show-hidden" type="bool" value="false"/>
+    <property name="sort-mode" type="uint" value="0"/>
+    <property name="show-drop-place" type="bool" value="true"/>
+    <property name="drop-place" type="bool" value="false"/>
+    <property name="use-custom-font" type="bool" value="false"/>
+    <property name="font" type="string" value="Sans 12"/>
+    <property name="backdrop" type="empty">
+      <property name="screen0" type="empty">
+        <property name="monitor0" type="empty">
+          <property name="workspace0" type="empty">
+            <property name="color-style" type="int" value="0"/>
+            <property name="picture-style" type="int" value="2"/>
+            <property name="picture-uri" type="string" value="file:///usr/share/backgrounds/nanite/wallpaper.png"/>
+            <property name="primary-color" type="empty">
+              <property name="red" type="uint" value="0"/>
+              <property name="green" type="uint" value="0"/>
+              <property name="blue" type="uint" value="0"/>
+              <property name="alpha" type="uint" value="65535"/>
+            </property>
+            <property name="secondary-color" type="empty">
+              <property name="red" type="uint" value="0"/>
+              <property name="green" type="uint" value="0"/>
+              <property name="blue" type="uint" value="0"/>
+              <property name="alpha" type="uint" value="65535"/>
+            </property>
+            <property name="color1" type="empty">
+              <property name="red" type="uint" value="0"/>
+              <property name="green" type="uint" value="0"/>
+              <property name="blue" type="uint" value="0"/>
+              <property name="alpha" type="uint" value="65535"/>
+            </property>
+            <property name="color2" type="empty">
+              <property name="red" type="uint" value="0"/>
+              <property name="green" type="uint" value="0"/>
+              <property name="blue" type="uint" value="0"/>
+              <property name="alpha" type="uint" value="65535"/>
+            </property>
+          </property>
+        </property>
+      </property>
+    </property>
+  </property>
+</channel>
+EOF
+
+# Apply wallpaper to existing users
+for user_home in /home/*; do
+    if [ -d "$user_home" ] && [ -d "$user_home/.config/xfce4" ]; then
+        user_config="$user_home/.config/xfce4/xfconf/xfce-perchannel-xml"
+        mkdir -p "$user_config"
+        
+        # Copy the desktop configuration
+        cp /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml "$user_config/"
+        
+        # Set proper ownership
+        username=$(basename "$user_home")
+        chown -R "$username:$username" "$user_config"
+    fi
+done
+
+# Update distributor logo
+if [ -f "$LOGO_PATH" ]; then
+    # Copy to common locations
+    cp "$LOGO_PATH" /usr/share/pixmaps/debian-logo.png
+    cp "$LOGO_PATH" /usr/share/plymouth/debian-logo.png
+    
+    # Update lsb-release if it exists
+    if [ -f /etc/lsb-release ]; then
+        sed -i 's/DISTRIB_ID=.*/DISTRIB_ID=Nanite/' /etc/lsb-release
+        sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION="Nanite Linux"/' /etc/lsb-release
+    fi
+fi
+
+# Update current user's wallpaper if running in a desktop session
+if [ -n "$DISPLAY" ] && [ -n "$USER" ]; then
+    # Try to update wallpaper for current user
+    if command -v xfconf-query >/dev/null 2>&1; then
+        xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/picture-uri -s "file://$WALLPAPER_PATH" || true
+    fi
+fi
+
+echo "Nanite branding package installed successfully!"
+echo "Wallpaper and logo have been applied to the system."
+echo "New users will automatically get the Nanite branding."
+echo "Existing users may need to log out and back in to see changes."

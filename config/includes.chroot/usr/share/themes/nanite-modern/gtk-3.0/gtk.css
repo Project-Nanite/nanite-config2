@@ -1,0 +1,634 @@
+/* FUTURISTIC AI GTK3 THEME */
+/* Sharp, high-tech design with distinct colors - no rounded corners or blending */
+
+/* FUTURISTIC AI COLOR PALETTE */
+@define-color bg_color #111319;
+@define-color fg_color #00ccff;
+@define-color base_color #0d1117;
+@define-color text_color #ffffff;
+@define-color selected_bg_color #00ccff;
+@define-color selected_fg_color #000000;
+@define-color tooltip_bg_color #1a1f2e;
+@define-color tooltip_fg_color #00ccff;
+@define-color warning_color #ff9500;
+@define-color error_color #ff0040;
+@define-color success_color #00ff80;
+
+/* AI ACCENT COLORS - SOFTER FOR EYE COMFORT */
+@define-color primary_cyan #4a9eff;
+@define-color primary_blue #3d7bff;
+@define-color electric_green #4dff8a;
+@define-color neon_orange #ff9944;
+@define-color cyber_red #ff4466;
+@define-color tech_purple #9966ff;
+@define-color matrix_green #66ff66;
+@define-color dark_bg #111319;
+@define-color darker_bg #0d1117;
+@define-color light_bg #1a1f2e;
+@define-color border_cyan #4a9eff;
+@define-color border_blue #3d7bff;
+
+/* AI SHADOWS AND EFFECTS - SOFTER GLOW */
+@define-color glow_cyan rgba(74, 158, 255, 0.15);
+@define-color glow_blue rgba(61, 123, 255, 0.15);
+@define-color glow_green rgba(77, 255, 138, 0.15);
+@define-color shadow_dark rgba(0, 0, 0, 0.6);
+
+/* BASE STYLING - SHARP, NO ROUNDED CORNERS */
+* {
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace;
+    font-size: 10px;
+    outline: none;
+    border-radius: 0px;
+}
+
+/* WINDOWS AND DIALOGS - SHARP AI STYLE */
+window, dialog {
+    background: @dark_bg;
+    color: @text_color;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    box-shadow: 
+        0 0 10px @glow_cyan,
+        inset 0 1px 0 rgba(74, 158, 255, 0.3);
+}
+
+/* BUTTONS - SHARP FUTURISTIC DESIGN */
+button {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    color: @primary_cyan;
+    padding: 8px 16px;
+    margin: 1px;
+    font-weight: bold;
+    font-size: 9px;
+    transition: all 0.1s linear;
+    box-shadow: 
+        0 0 5px @glow_cyan,
+        inset 0 1px 0 @border_cyan;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: @primary_cyan;
+    border-color: @primary_blue;
+    color: @dark_bg;
+    box-shadow: 
+        0 0 8px @glow_cyan,
+        inset 0 1px 0 rgba(61, 123, 255, 0.4);
+    transform: none;
+}
+
+button:active {
+    background: @primary_blue;
+    color: @text_color;
+    box-shadow: 
+        0 0 10px @glow_blue,
+        inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+button:disabled {
+    background: @darker_bg;
+    color: #666666;
+    border-color: #333333;
+    box-shadow: none;
+}
+
+/* PRIMARY ACTION BUTTONS */
+button.suggested-action {
+    background: @electric_green;
+    color: @dark_bg;
+    border-color: @matrix_green;
+    font-weight: bold;
+}
+
+button.suggested-action:hover {
+    background: @matrix_green;
+    box-shadow: 
+        0 0 15px @glow_green,
+        inset 0 1px 0 @electric_green;
+}
+
+/* DESTRUCTIVE BUTTONS */
+button.destructive-action {
+    background: @cyber_red;
+    color: @text_color;
+    border-color: #cc0033;
+}
+
+button.destructive-action:hover {
+    background: #ff0040;
+    box-shadow: 
+        0 0 15px rgba(255, 0, 64, 0.5),
+        inset 0 1px 0 #ff3366;
+}
+
+/* ENTRY FIELDS - TERMINAL STYLE */
+entry {
+    background: @darker_bg;
+    border: 1px solid rgba(74, 158, 255, 0.6);
+    border-radius: 0px;
+    color: @text_color;
+    padding: 8px 12px;
+    margin: 1px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 3px @glow_cyan;
+    caret-color: @primary_cyan;
+}
+
+entry:focus {
+    border-color: @primary_blue;
+    background: @dark_bg;
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.5),
+        0 0 6px @glow_blue,
+        0 0 2px rgba(61, 123, 255, 0.4);
+}
+
+entry:disabled {
+    background: #0a0a0a;
+    color: #666666;
+    border-color: #333333;
+}
+
+/* MINIMAL SCROLLBARS - THIN AI STYLE */
+scrollbar {
+    background: @darker_bg;
+    border: none;
+    border-radius: 0px;
+    margin: 0px;
+    min-width: 6px;
+    min-height: 6px;
+}
+
+scrollbar slider {
+    background: @primary_cyan;
+    border: none;
+    border-radius: 0px;
+    min-width: 4px;
+    min-height: 4px;
+    margin: 1px;
+    box-shadow: 0 0 2px @glow_cyan;
+}
+
+scrollbar slider:hover {
+    background: @primary_blue;
+    box-shadow: 0 0 4px @glow_blue;
+}
+
+scrollbar trough {
+    background: @darker_bg;
+    border: none;
+    border-radius: 0px;
+}
+
+/* MENUS - FUTURISTIC PANELS */
+menu, menubar {
+    background: @dark_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    color: @text_color;
+    padding: 4px;
+    box-shadow: 
+        0 0 8px @glow_cyan,
+        inset 0 1px 0 rgba(74, 158, 255, 0.3);
+}
+
+menuitem {
+    padding: 8px 12px;
+    margin: 1px;
+    border-radius: 0px;
+    color: @primary_cyan;
+    font-weight: bold;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+menuitem:hover {
+    background: @primary_cyan;
+    color: @dark_bg;
+    box-shadow: 
+        0 0 10px @glow_cyan,
+        inset 0 1px 0 @primary_blue;
+}
+
+/* NOTEBOOKS/TABS - AI INTERFACE */
+notebook {
+    background: @dark_bg;
+    border: 1px solid rgba(74, 158, 255, 0.5);
+    border-radius: 0px;
+    padding: 0px;
+    box-shadow: 
+        0 0 6px @glow_cyan,
+        inset 0 1px 0 rgba(74, 158, 255, 0.3);
+}
+
+tab {
+    background: @darker_bg;
+    border: 1px solid rgba(74, 158, 255, 0.4);
+    border-radius: 0px;
+    padding: 8px 16px;
+    margin: 0px;
+    color: @primary_cyan;
+    font-weight: bold;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 2px @glow_cyan;
+}
+
+tab:checked {
+    background: @primary_cyan;
+    color: @dark_bg;
+    border-color: @primary_blue;
+    box-shadow: 
+        0 0 15px @glow_cyan,
+        inset 0 1px 0 @primary_blue;
+}
+
+/* PROGRESS BARS - TECH STYLE */
+progressbar {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 0px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+progressbar progress {
+    background: linear-gradient(90deg, @primary_cyan 0%, @electric_green 100%);
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* CHECKBOXES AND RADIO BUTTONS */
+checkbutton, radiobutton {
+    color: @text_color;
+    padding: 4px;
+    font-weight: bold;
+}
+
+checkbutton check, radiobutton radio {
+    background: @darker_bg;
+    border: 1px solid rgba(74, 158, 255, 0.6);
+    border-radius: 0px;
+    min-width: 12px;
+    min-height: 12px;
+    box-shadow: 0 0 2px @glow_cyan;
+}
+
+checkbutton check:checked, radiobutton radio:checked {
+    background: @primary_cyan;
+    border-color: @primary_blue;
+    color: @dark_bg;
+    box-shadow: 
+        0 0 15px @glow_cyan,
+        inset 0 1px 0 @primary_blue;
+}
+
+/* COMBO BOXES - AI DROPDOWNS */
+combobox {
+    background: @darker_bg;
+    border: 1px solid rgba(74, 158, 255, 0.5);
+    border-radius: 0px;
+    padding: 6px 10px;
+    color: @text_color;
+    box-shadow: 
+        0 0 2px @glow_cyan,
+        inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+combobox:focus {
+    border-color: @primary_blue;
+    box-shadow: 
+        0 0 15px @glow_blue,
+        inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* TREE VIEWS AND LISTS - DATA GRIDS */
+treeview, list {
+    background: @darker_bg;
+    color: @text_color;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    box-shadow: 
+        0 0 10px @glow_cyan,
+        inset 0 1px 0 @border_cyan;
+}
+
+treeview:selected, list:selected {
+    background: @primary_cyan;
+    color: @dark_bg;
+    font-weight: bold;
+}
+
+/* STATUS BARS - INFO DISPLAYS */
+statusbar {
+    background: @darker_bg;
+    color: @primary_cyan;
+    border-top: 1px solid @border_cyan;
+    padding: 4px 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+/* TOOLBARS - CONTROL PANELS */
+toolbar {
+    background: @dark_bg;
+    border-bottom: 2px solid @border_cyan;
+    padding: 4px;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+toolbutton {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 6px;
+    margin: 1px;
+    color: @primary_cyan;
+    box-shadow: 0 0 5px @glow_cyan;
+}
+
+toolbutton:hover {
+    background: @primary_cyan;
+    color: @dark_bg;
+    border-color: @primary_blue;
+    box-shadow: 0 0 15px @glow_cyan;
+}
+
+toolbutton:active {
+    background: @primary_blue;
+    color: @text_color;
+    box-shadow: 0 0 10px @glow_blue;
+}
+
+/* FRAMES AND LABELS */
+frame {
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 8px;
+    background: @darker_bg;
+    box-shadow: 0 0 5px @glow_cyan;
+}
+
+label {
+    color: @text_color;
+    font-weight: normal;
+}
+
+label:disabled {
+    color: #666666;
+}
+
+/* LINKS - CYBER STYLE */
+link {
+    color: @primary_cyan;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+link:hover {
+    color: @electric_green;
+    text-decoration: underline;
+    text-shadow: 0 0 5px @glow_green;
+}
+
+/* SPINNERS - LOADING INDICATORS */
+spinner {
+    color: @primary_cyan;
+    animation: spin 1s linear infinite;
+}
+
+/* SCALE WIDGETS - SLIDERS */
+scale {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 4px;
+    box-shadow: 0 0 5px @glow_cyan;
+}
+
+scale slider {
+    background: @primary_cyan;
+    border: 1px solid @primary_blue;
+    border-radius: 0px;
+    min-width: 16px;
+    min-height: 16px;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+scale trough {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* HEADER BAR - TOP CONTROLS */
+headerbar {
+    background: @dark_bg;
+    color: @text_color;
+    border-bottom: 2px solid @border_cyan;
+    box-shadow: 0 0 15px @glow_cyan;
+    padding: 6px;
+}
+
+headerbar button {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 6px;
+    margin: 2px;
+    color: @primary_cyan;
+    font-weight: bold;
+    font-size: 8px;
+    text-transform: uppercase;
+    box-shadow: 0 0 5px @glow_cyan;
+}
+
+headerbar button:hover {
+    background: @primary_cyan;
+    color: @dark_bg;
+    box-shadow: 0 0 15px @glow_cyan;
+}
+
+headerbar button:active {
+    background: @primary_blue;
+    color: @text_color;
+    box-shadow: 0 0 10px @glow_blue;
+}
+
+/* SEARCH BAR - QUERY INTERFACE */
+searchbar {
+    background: @darker_bg;
+    border-bottom: 2px solid @border_cyan;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+searchbar entry {
+    background: @dark_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 8px 16px;
+    margin: 8px;
+    color: @text_color;
+    font-family: "JetBrains Mono", monospace;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* SIDEBAR - NAVIGATION PANEL */
+sidebar {
+    background: @darker_bg;
+    border-right: 2px solid @border_cyan;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* POPOVER - FLOATING PANELS */
+popover {
+    background: @dark_bg;
+    border: 2px solid @border_cyan;
+    border-radius: 0px;
+    box-shadow: 
+        0 0 25px @glow_cyan,
+        inset 0 1px 0 @border_cyan;
+}
+
+/* TOOLTIP - INFO DISPLAY */
+tooltip {
+    background: @light_bg;
+    color: @primary_cyan;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    padding: 6px 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 8px;
+    font-weight: bold;
+    box-shadow: 
+        0 0 15px @glow_cyan,
+        inset 0 1px 0 @border_cyan;
+}
+
+/* SELECTION HIGHLIGHTING */
+selection {
+    background: @primary_cyan;
+    color: @dark_bg;
+}
+
+/* FOCUS INDICATORS - AI STYLE */
+*:focus {
+    outline: 2px solid @primary_cyan;
+    outline-offset: 0px;
+    box-shadow: 0 0 15px @glow_cyan;
+}
+
+/* HOVER EFFECTS - INSTANT */
+*:hover {
+    transition: all 0.1s linear;
+}
+
+/* ACTIVE STATES - IMMEDIATE */
+*:active {
+    transition: none;
+}
+
+/* DISABLED STATES */
+*:disabled {
+    opacity: 0.4;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* SCROLLED WINDOWS */
+scrolledwindow {
+    background: @darker_bg;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* TEXT VIEWS - EDITORS */
+textview {
+    background: @darker_bg;
+    color: @text_color;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    caret-color: @primary_cyan;
+    selection-background-color: @primary_cyan;
+    selection-color: @dark_bg;
+}
+
+textview text {
+    background: @darker_bg;
+    color: @text_color;
+}
+
+/* SEPARATORS - DIVIDERS */
+separator {
+    background: @border_cyan;
+    min-width: 1px;
+    min-height: 1px;
+    box-shadow: 0 0 3px @glow_cyan;
+}
+
+/* PANED WIDGETS */
+paned separator {
+    background: @border_cyan;
+    border-radius: 0px;
+    min-width: 2px;
+    min-height: 2px;
+    box-shadow: 0 0 5px @glow_cyan;
+}
+
+paned separator:hover {
+    background: @primary_cyan;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* CALENDAR - DATE PICKER */
+calendar {
+    background: @darker_bg;
+    color: @text_color;
+    border: 1px solid @border_cyan;
+    border-radius: 0px;
+    font-family: "JetBrains Mono", monospace;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+calendar:selected {
+    background: @primary_cyan;
+    color: @dark_bg;
+    font-weight: bold;
+}
+
+/* FILE CHOOSER - FILE BROWSER */
+filechooser {
+    background: @darker_bg;
+    color: @text_color;
+}
+
+filechooser .sidebar {
+    background: @dark_bg;
+    border-right: 2px solid @border_cyan;
+    box-shadow: 0 0 10px @glow_cyan;
+}
+
+/* PRINT STYLES - NO EFFECTS */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #000000 !important;
+    }
+}

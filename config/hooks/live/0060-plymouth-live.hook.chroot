@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Configure Plymouth for Live Environment
+# This hook ensures Plymouth works correctly during live boot
+
+set -e
+
+echo "I: Configuring Plymouth for live environment..."
+
+# Ensure live-boot integrates with Plymouth
+if [ -f /usr/share/initramfs-tools/scripts/casper-bottom/00misc ]; then
+    # Modify casper to work with Plymouth
+    sed -i '/plymouth quit/d' /usr/share/initramfs-tools/scripts/casper-bottom/00misc
+fi
+
+# Create a script to handle Plymouth in live environment
+cat > /usr/lib/systemd/system/plymouth-live.service << 'EOF'
+[Unit]
+Description=Show Plymouth Boot Splash for Live Environment
+DefaultDependencies=false
+After=systemd-vconsole-setup.service
+Before=systemd-ask-password-console.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
+# Enable the live Plymouth service
+systemctl enable plymouth-live.service
+
+# Ensure Plymouth theme files have correct permissions
+if [ -d /usr/share/plymouth/themes/ceratopsian ]; then
+    chmod -R 644 /usr/share/plymouth/themes/ceratopsian/*
+    chmod 755 /usr/share/plymouth/themes/ceratopsian
+fi
+
+# Create a symlink for easier theme management
+if [ ! -L /usr/share/plymouth/themes/default.plymouth ]; then
+    ln -sf /usr/share/plymouth/themes/ceratopsian/ceratopsian.plymouth /usr/share/plymouth/themes/default.plymouth
+fi
+
+echo "I: Plymouth live environment configuration completed"

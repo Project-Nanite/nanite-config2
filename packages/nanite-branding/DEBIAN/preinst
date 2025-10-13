@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+# Backup existing Debian logo files
+if [ -f /usr/share/pixmaps/debian-logo.png ]; then
+    cp /usr/share/pixmaps/debian-logo.png /usr/share/pixmaps/debian-logo.png.backup
+fi
+
+if [ -f /usr/share/plymouth/debian-logo.png ]; then
+    cp /usr/share/plymouth/debian-logo.png /usr/share/plymouth/debian-logo.png.backup
+fi
+
+# Backup lsb-release file
+if [ -f /etc/lsb-release ]; then
+    cp /etc/lsb-release /etc/lsb-release.backup
+fi
+
+echo "Existing branding files backed up successfully."

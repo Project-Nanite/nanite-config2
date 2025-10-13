@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Nanite Live Environment User Configuration
+# Ensure nanite user works properly in live environment
+
+echo "I: Configuring live environment for nanite user..."
+
+# Ensure nanite user exists with proper setup
+if id nanite >/dev/null 2>&1; then
+    echo "I: Nanite user found, ensuring proper configuration..."
+    
+    # Make sure home directory exists and has proper permissions
+    mkdir -p /home/nanite
+    chown -R nanite:nanite /home/nanite
+    
+    # Ensure user can write to their home directory
+    chmod 755 /home/nanite
+    
+    # Set up .dmrc for session selection
+    cat > /home/nanite/.dmrc << 'EOF'
+[Desktop]
+Session=xfce
+EOF
+    chown nanite:nanite /home/nanite/.dmrc
+    
+    # Ensure proper groups for hardware access
+    usermod -a -G audio,video,cdrom,floppy,plugdev,netdev,bluetooth,lpadmin nanite 2>/dev/null || true
+    
+    # Configure X11 permissions
+    if [ -f /home/nanite/.Xauthority ]; then
+        chown nanite:nanite /home/nanite/.Xauthority
+    fi
+    
+    echo "I: Live user configuration completed"
+else
+    echo "W: Nanite user not found in live environment"
+fi
+
+# Ensure autologin service is enabled
+systemctl enable lightdm 2>/dev/null || true
+
+# Configure session cleanup
+cat > /etc/systemd/system/nanite-session-cleanup.service << 'EOF'
+[Unit]
+Description=Nanite Session Cleanup
+Before=lightdm.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'rm -f /home/nanite/.xsession-errors*; touch /home/nanite/.xsession-errors; chown nanite:nanite /home/nanite/.xsession-errors'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable nanite-session-cleanup 2>/dev/null || true
+
+echo "I: Live environment configuration completed successfully!"

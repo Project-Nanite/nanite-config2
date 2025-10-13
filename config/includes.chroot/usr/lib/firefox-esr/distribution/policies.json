@@ -1,0 +1,130 @@
+{
+  "policies": {
+    "DisplayBookmarksToolbar": "always",
+    "DefaultSearchEngine": "DuckDuckGo",
+    "SearchEngines": {
+      "Default": "DuckDuckGo",
+      "PreventInstalls": false,
+      "Remove": ["Google", "Bing", "Amazon.com", "eBay", "Twitter"]
+    },
+    "NewTabPage": true,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "DisablePocket": true,
+    "UserMessaging": {
+      "WhatsNew": false,
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "UrlbarInterventions": false,
+      "SkipOnboarding": true,
+      "MoreFromMozilla": false
+    },
+    "FirefoxHome": {
+      "Search": true,
+      "TopSites": true,
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "SponsoredPocket": false,
+      "Snippets": false,
+      "Locked": false
+    },
+    "ManagedBookmarks": [
+      {
+        "toplevel_name": "Nanite Welcome"
+      },
+      {
+        "name": "Welcome to Nanite",
+        "url": "https://nanite.software"
+      }
+    ],
+    "Preferences": {
+      "browser.newtabpage.activity-stream.feeds.recommendationprovider": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.newtabpage.activity-stream.feeds.section.highlights": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.newtabpage.activity-stream.feeds.snippets": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.newtabpage.activity-stream.feeds.topsites": {
+        "Value": true,
+        "Status": "default"
+      },
+      "browser.newtabpage.activity-stream.showSponsored": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.newtabpage.activity-stream.showSponsoredTopSites": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.search.suggest.enabled": {
+        "Value": true,
+        "Status": "default"
+      },
+      "browser.urlbar.suggest.searches": {
+        "Value": true,
+        "Status": "default"
+      },
+      "extensions.pocket.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "datareporting.healthreport.uploadEnabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "datareporting.policy.dataSubmissionEnabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "toolkit.telemetry.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "app.shield.optoutstudies.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "sidebar.verticalTabs": {
+        "Value": true,
+        "Status": "default"
+      },
+      "browser.tabs.inTitlebar": {
+        "Value": 0,
+        "Status": "default"
+      },
+      "browser.compactmode.show": {
+        "Value": true,
+        "Status": "default"
+      },
+      "browser.uidensity": {
+        "Value": 1,
+        "Status": "default"
+      },
+      "toolkit.legacyUserProfileCustomizations.stylesheets": {
+        "Value": true,
+        "Status": "default"
+      },
+      "browser.tabs.drawInTitlebar": {
+        "Value": false,
+        "Status": "default"
+      },
+      "browser.theme.content-theme": {
+        "Value": 0,
+        "Status": "default"
+      },
+      "browser.theme.toolbar-theme": {
+        "Value": 0,
+        "Status": "default"
+      }
+    }
+  }
+}

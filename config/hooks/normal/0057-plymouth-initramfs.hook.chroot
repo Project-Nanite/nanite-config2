@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Configure Plymouth in initramfs for live boot
+# This ensures Plymouth works properly during the boot process
+
+set -e
+
+echo "I: Configuring Plymouth for initramfs..."
+
+# Add Plymouth to initramfs modules
+if [ ! -f /etc/initramfs-tools/modules ]; then
+    touch /etc/initramfs-tools/modules
+fi
+
+# Ensure required modules are loaded
+echo "plymouth" >> /etc/initramfs-tools/modules
+
+# Create initramfs hook for Plymouth
+mkdir -p /etc/initramfs-tools/hooks
+cat > /etc/initramfs-tools/hooks/plymouth << 'EOF'
+#!/bin/sh
+
+PREREQ=""
+
+prereqs()
+{
+    echo "$PREREQ"
+}
+
+case $1 in
+prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+# Copy Plymouth theme files
+if [ -d /usr/share/plymouth/themes/ceratopsian ]; then
+    mkdir -p "$DESTDIR/usr/share/plymouth/themes/ceratopsian"
+    cp -r /usr/share/plymouth/themes/ceratopsian/* "$DESTDIR/usr/share/plymouth/themes/ceratopsian/"
+fi
+
+# Copy Plymouth configuration
+if [ -f /etc/plymouth/plymouthd.conf ]; then
+    mkdir -p "$DESTDIR/etc/plymouth"
+    cp /etc/plymouth/plymouthd.conf "$DESTDIR/etc/plymouth/"
+fi
+
+if [ -f /usr/share/plymouth/plymouthd.defaults ]; then
+    mkdir -p "$DESTDIR/usr/share/plymouth"
+    cp /usr/share/plymouth/plymouthd.defaults "$DESTDIR/usr/share/plymouth/"
+fi
+EOF
+
+chmod +x /etc/initramfs-tools/hooks/plymouth
+
+# Create initramfs script for Plymouth
+mkdir -p /etc/initramfs-tools/scripts/init-top
+cat > /etc/initramfs-tools/scripts/init-top/plymouth << 'EOF'
+#!/bin/sh
+
+PREREQ=""
+
+prereqs()
+{
+    echo "$PREREQ"
+}
+
+case $1 in
+prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+# Start Plymouth early in boot process
+if [ -x /sbin/plymouthd ]; then
+    /sbin/plymouthd --mode=boot --attach-to-session
+    /bin/plymouth --show-splash
+fi
+EOF
+
+chmod +x /etc/initramfs-tools/scripts/init-top/plymouth
+
+echo "I: Plymouth initramfs configuration completed"

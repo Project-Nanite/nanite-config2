@@ -1,0 +1,140 @@
+// Nanite Animated Plymouth Boot Screen
+// Frame-based animation with 79 frames
+
+// Screen setup
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+screenWidth = Window.GetWidth();
+screenHeight = Window.GetHeight();
+centerX = screenWidth / 2;
+centerY = screenHeight / 2;
+
+// Animation configuration
+totalFrames = 79;
+currentFrame = 0;
+frameRate = 30; // Approximate FPS
+frameDuration = 1.0 / frameRate;
+elapsedTime = 0;
+
+// Load all animation frames
+for (i = 0; i < totalFrames; i++) {
+    frameNumber = i + 1;
+    
+    // Format frame number with leading zeros (001, 002, etc.)
+    if (frameNumber < 10) {
+        frameFile = "ezgif-frame-00" + frameNumber + ".jpg";
+    } else if (frameNumber < 100) {
+        frameFile = "ezgif-frame-0" + frameNumber + ".jpg";
+    } else {
+        frameFile = "ezgif-frame-" + frameNumber + ".jpg";
+    }
+    
+    frames[i] = Image(frameFile);
+}
+
+// Create the animation sprite
+animationSprite = Sprite();
+animationSprite.SetZ(10);
+
+// Function to display a specific frame
+fun showFrame(index) {
+    if (index >= 0 && index < totalFrames && frames[index]) {
+        img = frames[index];
+        
+        // Center the frame on screen
+        x = centerX - img.GetWidth() / 2;
+        y = centerY - img.GetHeight() / 2;
+        
+        animationSprite.SetImage(img);
+        animationSprite.SetPosition(x, y, 10);
+        animationSprite.SetOpacity(1);
+    }
+}
+
+// Show first frame
+showFrame(0);
+
+// Refresh function - called continuously to animate
+fun refreshCallback() {
+    // Auto-loop animation
+    currentFrame++;
+    if (currentFrame >= totalFrames) {
+        currentFrame = 0;
+    }
+    
+    showFrame(currentFrame);
+}
+
+Plymouth.SetRefreshFunction(refreshCallback);
+
+// Alternative: Tie animation to boot progress
+fun bootProgressCallback(duration, progress) {
+    // Map boot progress (0.0 to 1.0) to frame index
+    frameIndex = Math.Int(progress * (totalFrames - 1));
+    if (frameIndex >= totalFrames) {
+        frameIndex = totalFrames - 1;
+    }
+    showFrame(frameIndex);
+}
+
+// Uncomment to use boot-progress-based animation instead of continuous loop
+// Plymouth.SetBootProgressFunction(bootProgressCallback);
+
+// Message display function
+message = Sprite();
+message.SetPosition(10, 10, 10000);
+
+fun messageCallback(text) {
+    messageImage = Image.Text(text, 1, 1, 1);
+    message.SetImage(messageImage);
+}
+
+Plymouth.SetMessageFunction(messageCallback);
+
+// Password dialog
+passwordSprite = Sprite();
+bulletSprites = [];
+
+fun passwordDialogCallback(prompt, bullets) {
+    // Display prompt message
+    if (prompt) {
+        promptImage = Image.Text(prompt, 1, 1, 1);
+        promptSprite = Sprite(promptImage);
+        promptSprite.SetPosition(
+            centerX - promptImage.GetWidth() / 2,
+            centerY + 150,
+            10001
+        );
+    }
+    
+    // Display password bullets
+    bulletText = "";
+    for (i = 0; i < bullets; i++) {
+        bulletText += "• ";
+    }
+    
+    bulletImage = Image.Text(bulletText, 1, 1, 1);
+    passwordSprite.SetImage(bulletImage);
+    passwordSprite.SetPosition(
+        centerX - bulletImage.GetWidth() / 2,
+        centerY + 180,
+        10001
+    );
+}
+
+Plymouth.SetDisplayPasswordFunction(passwordDialogCallback);
+
+// Normal display function
+fun displayNormalCallback() {
+    // Continue showing animation
+}
+
+Plymouth.SetDisplayNormalFunction(displayNormalCallback);
+
+// Quit function
+fun quitCallback() {
+    animationSprite.SetOpacity(0);
+}
+
+Plymouth.SetQuitFunction(quitCallback);

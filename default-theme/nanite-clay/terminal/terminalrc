@@ -1,0 +1,66 @@
+[Configuration]
+Term=xterm-256color
+ColorForeground=#2c2c2c
+ColorBackground=#f8f6f3
+ColorCursor=#e8a87c
+ColorBold=#1a1a1a
+ColorBoldUseDefault=FALSE
+ColorPalette=#f5f5f0;#e74c3c;#27ae60;#f39c12;#3498db;#9b59b6;#1abc9c;#2c2c2c;#95a5a6;#c0392b;#229954;#d68910;#2980b9;#8e44ad;#17a2b8;#1a1a1a
+TabActivityColor=#e8a87c
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.05
+ScrollingBar=TERMINAL_SCROLLBAR_RIGHT
+ScrollingOnOutput=FALSE
+ScrollingOnKeystroke=TRUE
+ScrollingLines=10000
+FontName=JetBrains Mono 11
+FontAllowBold=TRUE
+CursorShape=TERMINAL_CURSOR_SHAPE_IBEAM
+CursorBlinks=TRUE
+TabPosition=GTK_POS_TOP
+CommandLoginShell=FALSE
+CommandUpdateRecords=TRUE
+WordChars=-A-Za-z0-9,./?%&#:_
+TitleMode=TERMINAL_TITLE_REPLACE
+ShortcutsNoMnemonics=FALSE
+ShortcutsNoMenukey=FALSE
+ShortcutsNoHelpkey=FALSE
+TextBlinkMode=TERMINAL_TEXT_BLINK_MODE_FOCUSED
+TextSelectByWord=TRUE
+CellWidthScale=1.0
+CellHeightScale=1.0
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE
+MiscBellUrgent=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=TRUE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_IBEAM
+MiscDefaultGeometry=100x30
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=FALSE
+MiscMouseAutohide=FALSE
+MiscMouseWheelZoom=TRUE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+MiscMiddleClickOpensUri=TRUE
+MiscCopyOnSelect=FALSE
+MiscShowRelaunchDialog=TRUE
+MiscRewrapOnResize=TRUE
+MiscUrgentBell=FALSE
+MiscSlimTabs=FALSE
+MiscNewTabAdjacent=FALSE
+MiscSearchDialogOpacity=100
+MiscShowUnsafePasteDialog=TRUE
+MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
+
+# Beautiful Claymorphism color scheme
+# Background: Warm off-white clay (#f8f6f3)
+# Foreground: Deep charcoal (#2c2c2c)
+# Cursor: Warm clay accent (#e8a87c)
+# Transparency: Subtle 5% for depth
+# Font: JetBrains Mono for modern code aesthetic 

@@ -1,0 +1,1 @@
+../../../grub/themes/nanite/grub_background.sh

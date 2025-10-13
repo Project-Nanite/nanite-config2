@@ -1,0 +1,186 @@
+#!/bin/bash
+
+# Fix Auto-login for Nanite Live Environment
+# This ensures direct desktop boot without login prompts
+
+echo "I: Configuring robust auto-login for live environment..."
+
+# Method 1: Configure LightDM properly
+echo "I: Setting up LightDM auto-login..."
+
+# Create main LightDM config
+cat > /etc/lightdm/lightdm.conf << 'EOF'
+[LightDM]
+#minimum-display-number=0
+#minimum-vt=7
+#lock-memory=true
+#user-authority-in-system-dir=false
+#guest-account-script=guest-account
+#logind-check-graphical=false
+#log-directory=/var/log/lightdm
+run-directory=/run/lightdm
+
+[Seat:*]
+#type=local
+#pam-service=lightdm
+#pam-autologin-service=lightdm-autologin
+#pam-greeter-service=lightdm-greeter
+#xserver-command=X
+#xmir-command=Xmir
+#xserver-config=
+#xserver-layout=
+#xserver-allow-tcp=false
+#xserver-share=true
+#xserver-hostname=
+#xdmcp-manager=
+#xdmcp-port=177
+#xdmcp-listen-address=
+#xdmcp-key=
+#unity-compositor-command=unity-system-compositor
+#unity-compositor-timeout=60
+greeter-session=lightdm-gtk-greeter
+#greeter-hide-users=false
+#greeter-allow-guest=true
+#greeter-show-manual-login=false
+#greeter-show-remote-login=true
+user-session=xfce
+#allow-user-switching=true
+#allow-guest=true
+#guest-session=
+autologin-user=nanite
+autologin-user-timeout=0
+#autologin-in-background=false
+autologin-session=xfce
+#exit-on-failure=false
+
+[XDMCPServer]
+#enabled=false
+#port=177
+#listen-address=
+#key=
+#hostname=
+
+[VNCServer]
+#enabled=false
+#command=Xvnc
+#port=5900
+#listen-address=
+#width=1024
+#height=768
+#depth=8
+EOF
+
+# Method 2: Create systemd override for automatic login
+echo "I: Setting up systemd auto-login override..."
+
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+cat > /etc/systemd/system/getty@tty1.service.d/override.conf << 'EOF'
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin nanite --noclear %I $TERM
+Type=simple
+EOF
+
+# Method 3: Configure live-config to not interfere
+echo "I: Configuring live-config..."
+
+mkdir -p /etc/live/config.conf.d
+cat > /etc/live/config.conf.d/nanite-autologin.conf << 'EOF'
+LIVE_USERNAME="nanite"
+LIVE_USER_FULLNAME="Nanite Live User"
+LIVE_USER_DEFAULT_GROUPS="audio,cdrom,dip,floppy,video,plugdev,netdev,powerdev,scanner,bluetooth,sudo,adm"
+LIVE_HOSTNAME="nanite-live"
+LIVE_USER_ENCRYPTION="false"
+EOF
+
+# Method 4: Direct startx approach as fallback
+echo "I: Setting up direct X11 startup..."
+
+cat > /home/nanite/.bash_profile << 'EOF'
+#!/bin/bash
+# Auto-start X11 if on tty1 and DISPLAY is not set
+if [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+    exec startx
+fi
+EOF
+
+# Create .xinitrc for direct X startup
+cat > /home/nanite/.xinitrc << 'EOF'
+#!/bin/sh
+# Start XFCE session
+exec /usr/bin/startxfce4
+EOF
+
+# Set proper ownership
+chown nanite:nanite /home/nanite/.bash_profile
+chown nanite:nanite /home/nanite/.xinitrc
+chmod +x /home/nanite/.xinitrc
+
+# Method 5: Disable LightDM greeter show users
+echo "I: Disabling user selection in greeter..."
+
+cat > /etc/lightdm/lightdm-gtk-greeter.conf << 'EOF'
+[greeter]
+background=/usr/share/backgrounds/wallpaper.png
+theme-name=Adwaita
+icon-theme-name=Nanite-Icons
+default-user-image=/usr/share/pixmaps/nanite-logo.png
+font-name=Sans 11
+xft-antialias=true
+xft-dpi=96
+xft-hintstyle=slight
+xft-rgba=rgb
+show-indicators=~host;~spacer;~clock;~spacer;~language;~session;~a11y;~power
+show-clock=true
+clock-format=%A, %B %d, %Y  %H:%M
+# Auto-login specific settings
+hide-user-image=false
+show-language-selector=false
+indicators=
+keyboard=
+EOF
+
+# Method 6: Fix PAM configuration for autologin
+echo "I: Configuring PAM for autologin..."
+
+# Ensure autologin PAM service exists
+if [ ! -f /etc/pam.d/lightdm-autologin ]; then
+    cat > /etc/pam.d/lightdm-autologin << 'EOF'
+#%PAM-1.0
+auth        required    pam_env.so
+auth        required    pam_permit.so
+@include    common-account
+session     required    pam_limits.so
+@include    common-session
+@include    common-password
+EOF
+fi
+
+# Enable necessary services
+echo "I: Enabling services..."
+systemctl enable lightdm 2>/dev/null || true
+
+# Disable GDM if it exists (conflicts with LightDM)
+systemctl disable gdm 2>/dev/null || true
+systemctl disable gdm3 2>/dev/null || true
+
+# Method 7: Create a service to ensure nanite user login
+cat > /etc/systemd/system/nanite-autologin.service << 'EOF'
+[Unit]
+Description=Nanite Auto Login Service
+After=lightdm.service
+Wants=lightdm.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -c 'sleep 5; if ! pgrep -u nanite > /dev/null; then sudo -u nanite DISPLAY=:0 /usr/bin/startxfce4 & fi'
+
+[Install]
+WantedBy=graphical.target
+EOF
+
+systemctl enable nanite-autologin.service 2>/dev/null || true
+
+echo "I: Auto-login configuration completed!"
+echo "   Multiple methods configured to ensure direct desktop boot"

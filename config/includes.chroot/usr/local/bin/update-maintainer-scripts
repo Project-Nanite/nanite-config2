@@ -1,0 +1,15 @@
+#!/bin/sh
+
+update_script() {
+	local script=$1
+	(
+	sed -n -e '1,/^FILES_TO_DIVERT="/ p' $script
+	cat files-to-divert
+	sed -n -e '/^" # END FILES_TO_DIVERT/,$ p' $script
+	) > $script.new
+	mv $script.new $script
+}
+
+update_script debian/nanite-themes.preinst
+update_script debian/nanite-themes.postinst
+update_script debian/nanite-themes.postrm

@@ -1,0 +1,3 @@
+[General]
+Prepend=systemsettings.desktop;org.kde.konsole.desktop;root-terminal.desktop;org.kde.dolphin.desktop;org.kde.kate.desktop;preferred://browser;nanite-www.desktop;nanite-tools.desktop;nanite-docs.desktop;nanite-bugs.desktop;offsec-training.desktop;exploit-database.desktop;vulnhub.desktop
+IgnoreDefaults=true

@@ -1,0 +1,357 @@
+#!/bin/bash
+
+# AI Tools & Chatbots Integration Hook
+# Adds popular AI services as desktop applications with Nanite branding
+
+set -e
+
+echo "I: Setting up AI tools and chatbots as desktop applications..."
+
+# Create launcher scripts directory
+mkdir -p /usr/local/bin/ai-tools
+
+# ChatGPT / OpenAI launcher
+cat > /usr/local/bin/ai-tools/chatgpt << 'EOF'
+#!/bin/bash
+# ChatGPT / OpenAI Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://openai.com"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://openai.com" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://openai.com" &
+else
+    zenity --info --title="ChatGPT / OpenAI" --text="Visit ChatGPT:\nhttps://openai.com"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/chatgpt
+
+# Claude (Anthropic) launcher
+cat > /usr/local/bin/ai-tools/claude << 'EOF'
+#!/bin/bash
+# Claude AI Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://claude.ai"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://claude.ai" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://claude.ai" &
+else
+    zenity --info --title="Claude AI" --text="Visit Claude AI:\nhttps://claude.ai"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/claude
+
+# Google Gemini launcher
+cat > /usr/local/bin/ai-tools/gemini << 'EOF'
+#!/bin/bash
+# Google Gemini Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://gemini.google.com"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://gemini.google.com" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://gemini.google.com" &
+else
+    zenity --info --title="Google Gemini" --text="Visit Google Gemini:\nhttps://gemini.google.com"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/gemini
+
+# Perplexity AI launcher
+cat > /usr/local/bin/ai-tools/perplexity << 'EOF'
+#!/bin/bash
+# Perplexity AI Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://perplexity.ai"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://perplexity.ai" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://perplexity.ai" &
+else
+    zenity --info --title="Perplexity AI" --text="Visit Perplexity AI:\nhttps://perplexity.ai"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/perplexity
+
+# Mistral AI launcher
+cat > /usr/local/bin/ai-tools/mistral << 'EOF'
+#!/bin/bash
+# Mistral AI Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://chat.mistral.ai"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://chat.mistral.ai" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://chat.mistral.ai" &
+else
+    zenity --info --title="Mistral AI" --text="Visit Mistral AI:\nhttps://chat.mistral.ai"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/mistral
+
+# Hugging Face launcher
+cat > /usr/local/bin/ai-tools/huggingface << 'EOF'
+#!/bin/bash
+# Hugging Face Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://huggingface.co"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://huggingface.co" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://huggingface.co" &
+else
+    zenity --info --title="Hugging Face" --text="Visit Hugging Face:\nhttps://huggingface.co"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/huggingface
+
+# GitHub Copilot launcher
+cat > /usr/local/bin/ai-tools/copilot << 'EOF'
+#!/bin/bash
+# GitHub Copilot Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://github.com/features/copilot"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://github.com/features/copilot" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://github.com/features/copilot" &
+else
+    zenity --info --title="GitHub Copilot" --text="Visit GitHub Copilot:\nhttps://github.com/features/copilot"
+fi
+EOF
+
+chmod +x /usr/local/bin/ai-tools/copilot
+
+echo "I: Creating desktop application entries for AI tools..."
+
+# ChatGPT / OpenAI desktop entry
+cat > /usr/share/applications/nanite-chatgpt.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ChatGPT
+Comment=AI chat assistant by OpenAI
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/chatgpt
+Terminal=false
+Categories=Network;AI;Education;Development;
+Keywords=ai;chatgpt;openai;assistant;chat;
+StartupNotify=true
+EOF
+
+# Claude AI desktop entry
+cat > /usr/share/applications/nanite-claude.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Claude AI
+Comment=Conversational AI by Anthropic
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/claude
+Terminal=false
+Categories=Network;AI;Education;Development;
+Keywords=ai;claude;anthropic;assistant;chat;
+StartupNotify=true
+EOF
+
+# Google Gemini desktop entry
+cat > /usr/share/applications/nanite-gemini.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Google Gemini
+Comment=Google's conversational AI
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/gemini
+Terminal=false
+Categories=Network;AI;Education;Development;
+Keywords=ai;gemini;google;assistant;chat;
+StartupNotify=true
+EOF
+
+# Perplexity AI desktop entry
+cat > /usr/share/applications/nanite-perplexity.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Perplexity AI
+Comment=AI-powered search and research
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/perplexity
+Terminal=false
+Categories=Network;AI;Education;Research;
+Keywords=ai;perplexity;search;research;
+StartupNotify=true
+EOF
+
+# Mistral AI desktop entry
+cat > /usr/share/applications/nanite-mistral.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mistral AI
+Comment=Open-source AI chat assistant
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/mistral
+Terminal=false
+Categories=Network;AI;Education;Development;
+Keywords=ai;mistral;chat;assistant;opensource;
+StartupNotify=true
+EOF
+
+# Hugging Face desktop entry
+cat > /usr/share/applications/nanite-huggingface.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Hugging Face
+Comment=AI models and datasets platform
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/huggingface
+Terminal=false
+Categories=Network;AI;Development;Science;
+Keywords=ai;huggingface;models;datasets;ml;
+StartupNotify=true
+EOF
+
+# GitHub Copilot desktop entry
+cat > /usr/share/applications/nanite-copilot.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GitHub Copilot
+Comment=AI-powered code completion
+Icon=nanite-logo
+Exec=/usr/local/bin/ai-tools/copilot
+Terminal=false
+Categories=Network;AI;Development;Programming;
+Keywords=ai;copilot;github;programming;code;
+StartupNotify=true
+EOF
+
+echo "I: Setting up AI tools browser integration..."
+
+# Add AI tools bookmarks to Firefox policy (if exists)
+if [ -f /usr/lib/firefox/distribution/policies.json ]; then
+    # Backup existing policy
+    cp /usr/lib/firefox/distribution/policies.json /usr/lib/firefox/distribution/policies.json.bak
+    
+    # Create enhanced policy with AI tools
+    cat > /usr/lib/firefox/distribution/policies.json << 'EOF'
+{
+  "policies": {
+    "Homepage": {
+      "URL": "https://nanite.software",
+      "Locked": false
+    },
+    "Bookmarks": [
+      {
+        "Title": "Nanite Linux",
+        "URL": "https://nanite.software",
+        "Folder": "Toolbar"
+      },
+      {
+        "Title": "Nanite Support",
+        "URL": "https://nanite.software/support",
+        "Folder": "Toolbar"
+      },
+      {
+        "Title": "AI Tools",
+        "URL": "",
+        "Folder": "AI & ML Tools",
+        "Children": [
+          {
+            "Title": "ChatGPT",
+            "URL": "https://openai.com"
+          },
+          {
+            "Title": "Claude AI",
+            "URL": "https://claude.ai"
+          },
+          {
+            "Title": "Google Gemini",
+            "URL": "https://gemini.google.com"
+          },
+          {
+            "Title": "Perplexity AI",
+            "URL": "https://perplexity.ai"
+          },
+          {
+            "Title": "Mistral AI",
+            "URL": "https://chat.mistral.ai"
+          },
+          {
+            "Title": "Hugging Face",
+            "URL": "https://huggingface.co"
+          },
+          {
+            "Title": "GitHub Copilot",
+            "URL": "https://github.com/features/copilot"
+          }
+        ]
+      }
+    ]
+  }
+}
+EOF
+fi
+
+echo "I: Creating AI tools documentation..."
+
+# Create AI tools info file
+cat > /usr/share/doc/nanite-ai-tools.txt << 'EOF'
+Nanite Linux - AI & ML Tools Integration
+
+The following AI tools and services are pre-configured as applications
+in your Nanite Linux distribution:
+
+CONVERSATIONAL AI:
+- ChatGPT (OpenAI)     : https://openai.com
+- Claude AI (Anthropic): https://claude.ai
+- Google Gemini        : https://gemini.google.com
+- Perplexity AI        : https://perplexity.ai
+- Mistral AI           : https://chat.mistral.ai
+
+DEVELOPMENT TOOLS:
+- Hugging Face         : https://huggingface.co
+- GitHub Copilot       : https://github.com/features/copilot
+
+All tools are accessible from:
+- Applications Menu > AI category
+- Applications Menu > Network category
+- Browser bookmarks (Firefox)
+
+These applications use the Nanite logo for consistent branding
+and provide easy access to the most popular AI services.
+
+For more AI/ML tools and local installations, visit:
+https://nanite.software/ai-tools
+EOF
+
+# Update desktop database
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database /usr/share/applications
+fi
+
+# Update MIME database
+if command -v update-mime-database >/dev/null 2>&1; then
+    update-mime-database /usr/share/mime
+fi
+
+echo "I: AI tools integration completed!"
+echo "   Added ChatGPT, Claude, Gemini, Perplexity, Mistral, Hugging Face, and GitHub Copilot"
+echo "   All applications use Nanite branding and are available in the applications menu"

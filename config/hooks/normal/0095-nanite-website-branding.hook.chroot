@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# Nanite Website Branding Hook
+# Update all website references to https://nanite.software
+
+set -e
+
+echo "I: Updating all website references to https://nanite.software..."
+
+# Update any remaining configuration files with website references
+NANITE_WEBSITE="https://nanite.software"
+NANITE_SUPPORT="https://nanite.software/support"
+NANITE_BUGS="https://nanite.software/bugs"
+
+# Update desktop files with website information
+echo "I: Updating desktop files with website information..."
+
+# Find and update any desktop files that might have old URLs
+find /usr/share/applications -name "*.desktop" -type f -exec grep -l "nanite" {} \; | while read desktop_file; do
+    # Add website information to Nanite-related desktop files
+    if ! grep -q "X-Homepage" "$desktop_file" 2>/dev/null; then
+        echo "X-Homepage=$NANITE_WEBSITE" >> "$desktop_file"
+    fi
+done
+
+# Update Help and About dialogs
+echo "I: Setting up help system with website links..."
+
+# Create help script that opens website
+cat > /usr/local/bin/nanite-help << 'EOF'
+#!/bin/bash
+# Nanite Help Script - Opens support website
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://nanite.software/support"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://nanite.software/support" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://nanite.software/support" &
+else
+    zenity --info --title="Nanite Support" --text="Visit our support website:\nhttps://nanite.software/support"
+fi
+EOF
+
+chmod +x /usr/local/bin/nanite-help
+
+# Create website launcher script
+cat > /usr/local/bin/nanite-website << 'EOF'
+#!/bin/bash
+# Nanite Website Launcher
+
+if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "https://nanite.software"
+elif command -v firefox >/dev/null 2>&1; then
+    firefox "https://nanite.software" &
+elif command -v chromium >/dev/null 2>&1; then
+    chromium "https://nanite.software" &
+else
+    zenity --info --title="Nanite Website" --text="Visit our website:\nhttps://nanite.software"
+fi
+EOF
+
+chmod +x /usr/local/bin/nanite-website
+
+# Create desktop file for website launcher
+cat > /usr/share/applications/nanite-website.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Nanite Website
+Comment=Visit the official Nanite website
+Icon=nanite-logo
+Exec=nanite-website
+Terminal=false
+Categories=Network;WebBrowser;
+Keywords=nanite;website;homepage;
+EOF
+
+# Update system documentation
+echo "I: Updating system documentation..."
+
+# Create system info file with website
+cat > /usr/share/doc/nanite-info.txt << 'EOF'
+Nanite Linux - A Beautiful AI/ML Distribution
+
+Website: https://nanite.software
+Support: https://nanite.software/support
+Bug Reports: https://nanite.software/bugs
+
+Nanite Linux is a modern, beautiful Linux distribution optimized for
+AI/ML workloads with a stunning XFCE desktop environment.
+
+Features:
+- Beautiful geometric bee logo and branding
+- Modern claymorphism design themes
+- Optimized for AI/ML development
+- Fast XFCE desktop environment
+- Professional Plymouth boot splash
+
+For more information, documentation, and support, visit:
+https://nanite.software
+EOF
+
+# Update man pages and documentation
+if [ -d /usr/share/man/man1 ]; then
+    # Update any man pages that might reference old URLs
+    find /usr/share/man -name "*.gz" -exec zgrep -l "nanite" {} \; 2>/dev/null | while read manpage; do
+        echo "I: Found Nanite reference in $manpage"
+    done
+fi
+
+# Update Firefox/browser bookmarks (if applicable)
+echo "I: Setting up browser integration..."
+
+# Create Firefox policy for homepage (if Firefox is installed)
+if [ -d /usr/lib/firefox ]; then
+    mkdir -p /usr/lib/firefox/distribution
+    cat > /usr/lib/firefox/distribution/policies.json << 'EOF'
+{
+  "policies": {
+    "Homepage": {
+      "URL": "https://nanite.software",
+      "Locked": false
+    },
+    "Bookmarks": [
+      {
+        "Title": "Nanite Linux",
+        "URL": "https://nanite.software",
+        "Folder": "Toolbar"
+      },
+      {
+        "Title": "Nanite Support",
+        "URL": "https://nanite.software/support",
+        "Folder": "Toolbar"
+      }
+    ]
+  }
+}
+EOF
+fi
+
+# Create system-wide bookmarks for any browser
+mkdir -p /etc/skel/.local/share/applications
+cat > /etc/skel/.local/share/applications/nanite-bookmarks.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Nanite Bookmarks
+Comment=Quick access to Nanite websites
+Icon=nanite-logo
+Exec=nanite-website
+Terminal=false
+Categories=Network;
+NoDisplay=true
+EOF
+
+echo "I: Website branding configuration completed!"
+echo "   All system components now reference https://nanite.software"

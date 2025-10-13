@@ -1,0 +1,356 @@
+#!/bin/bash
+
+# Zsh with Oh My Zsh Setup Hook
+# Installs zsh, oh-my-zsh with aussiegeek theme and sets as default shell
+
+set -e
+
+echo "I: Setting up zsh with oh-my-zsh..."
+
+# Install zsh and dependencies
+echo "I: Installing zsh and required packages..."
+apt-get update
+apt-get install -y zsh curl git wget
+
+# Install oh-my-zsh system-wide
+echo "I: Installing oh-my-zsh framework..."
+
+# Create oh-my-zsh installation directory
+mkdir -p /usr/share/oh-my-zsh
+cd /usr/share/oh-my-zsh
+
+# Download oh-my-zsh
+curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o install.sh
+
+# Modify the install script to install system-wide without interactive prompts
+sed -i 's/read -r opt/opt=""/g' install.sh
+sed -i 's/exec zsh -l/# exec zsh -l/g' install.sh
+
+# Set environment variables for unattended installation
+export RUNZSH=no
+export CHSH=no
+
+# Run the installer in unattended mode
+sh install.sh --unattended
+
+# Move installation to proper location
+if [ -d "/root/.oh-my-zsh" ]; then
+    cp -r /root/.oh-my-zsh/* /usr/share/oh-my-zsh/
+    rm -rf /root/.oh-my-zsh
+fi
+
+# Set up oh-my-zsh system-wide configuration
+echo "I: Configuring oh-my-zsh system-wide..."
+
+# Create system-wide zsh configuration template
+cat > /etc/zsh/zshrc.oh-my-zsh << 'EOF'
+# System-wide Oh My Zsh configuration for Nanite Linux
+
+# Path to your oh-my-zsh installation.
+export ZSH="/usr/share/oh-my-zsh"
+
+# Set name of the theme to load
+ZSH_THEME="aussiegeek"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+HIST_STAMPS="yyyy-mm-dd"
+
+# Which plugins would you like to load?
+plugins=(
+    git
+    sudo
+    colored-man-pages
+    command-not-found
+    extract
+    z
+    history
+    docker
+    npm
+    python
+    pip
+    virtualenv
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='nano'
+else
+  export EDITOR='nano'
+fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though users
+# are encouraged to define aliases within the ZSH_CUSTOM folder.
+
+# Nanite-specific aliases
+alias nanite-info='nanite-sysinfo'
+alias install-nanite='nanite-installer'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Welcome message for new terminal
+echo "Welcome to Nanite Linux with Zsh + Oh My Zsh!"
+echo "Theme: aussiegeek | Shell: $(zsh --version)"
+echo "Website: https://nanite.software"
+echo ""
+EOF
+
+# Ensure the aussiegeek theme is available
+echo "I: Ensuring aussiegeek theme is available..."
+if [ ! -f "/usr/share/oh-my-zsh/themes/aussiegeek.zsh-theme" ]; then
+    echo "W: aussiegeek theme not found, downloading..."
+    curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/themes/aussiegeek.zsh-theme \
+        -o /usr/share/oh-my-zsh/themes/aussiegeek.zsh-theme
+fi
+
+# Set proper permissions for oh-my-zsh
+chmod -R 755 /usr/share/oh-my-zsh
+chown -R root:root /usr/share/oh-my-zsh
+
+# Configure zsh as default shell system-wide
+echo "I: Setting zsh as default shell..."
+
+# Add zsh to valid shells if not already present
+if ! grep -q "/usr/bin/zsh" /etc/shells; then
+    echo "/usr/bin/zsh" >> /etc/shells
+fi
+
+# Set zsh as default shell for new users
+sed -i 's|SHELL=/bin/bash|SHELL=/bin/zsh|g' /etc/default/useradd 2>/dev/null || true
+sed -i 's|DSHELL=/bin/bash|DSHELL=/bin/zsh|g' /etc/adduser.conf 2>/dev/null || true
+
+# Update adduser.conf to use zsh as default
+if grep -q "^DSHELL=" /etc/adduser.conf; then
+    sed -i 's|^DSHELL=.*|DSHELL=/bin/zsh|' /etc/adduser.conf
+else
+    echo "DSHELL=/bin/zsh" >> /etc/adduser.conf
+fi
+
+# Create user setup function for zsh
+cat > /usr/local/bin/setup-user-zsh << 'EOF'
+#!/bin/bash
+# Setup zsh for a specific user
+
+USER_NAME="$1"
+if [ -z "$USER_NAME" ]; then
+    echo "Usage: setup-user-zsh <username>"
+    exit 1
+fi
+
+USER_HOME=$(getent passwd "$USER_NAME" | cut -d: -f6)
+if [ -z "$USER_HOME" ] || [ ! -d "$USER_HOME" ]; then
+    echo "Error: User home directory not found for $USER_NAME"
+    exit 1
+fi
+
+echo "Setting up zsh for user: $USER_NAME"
+
+# Create user's .zshrc from template
+cp /etc/zsh/zshrc.oh-my-zsh "$USER_HOME/.zshrc"
+
+# Create user's oh-my-zsh custom directory
+mkdir -p "$USER_HOME/.oh-my-zsh/custom"
+
+# Set proper ownership
+chown -R "$USER_NAME:$USER_NAME" "$USER_HOME/.zshrc"
+chown -R "$USER_NAME:$USER_NAME" "$USER_HOME/.oh-my-zsh" 2>/dev/null || true
+
+# Change user's default shell to zsh
+chsh -s /bin/zsh "$USER_NAME"
+
+echo "Zsh setup completed for user: $USER_NAME"
+EOF
+
+chmod +x /usr/local/bin/setup-user-zsh
+
+# Setup zsh for existing users
+echo "I: Setting up zsh for existing users..."
+
+# Set up for root user
+if [ -d "/root" ]; then
+    echo "I: Configuring zsh for root user..."
+    cp /etc/zsh/zshrc.oh-my-zsh /root/.zshrc
+    chsh -s /bin/zsh root 2>/dev/null || true
+fi
+
+# Set up for nanite user if exists
+if id nanite >/dev/null 2>&1; then
+    echo "I: Configuring zsh for nanite user..."
+    /usr/local/bin/setup-user-zsh nanite
+fi
+
+# Create a hook for future user creation
+cat > /usr/local/bin/nanite-user-created-hook << 'EOF'
+#!/bin/bash
+# Hook to run when new users are created
+
+USER_NAME="$1"
+if [ -n "$USER_NAME" ]; then
+    /usr/local/bin/setup-user-zsh "$USER_NAME"
+fi
+EOF
+
+chmod +x /usr/local/bin/nanite-user-created-hook
+
+# Update system profile to include zsh setup
+cat >> /etc/profile << 'EOF'
+
+# Nanite Linux - Zsh Integration
+if [ -n "$ZSH_VERSION" ]; then
+    # Running in zsh
+    if [ -f "$HOME/.zshrc" ]; then
+        source "$HOME/.zshrc"
+    fi
+fi
+EOF
+
+# Create zsh completion directories
+mkdir -p /usr/share/zsh/site-functions
+mkdir -p /usr/local/share/zsh/site-functions
+
+# Set up zsh history configuration
+cat > /etc/zsh/zshenv << 'EOF'
+# System-wide zsh environment configuration
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTDUP=erase
+EOF
+
+# Install useful zsh plugins
+echo "I: Installing additional zsh plugins..."
+
+# Install zsh-autosuggestions
+if [ ! -d "/usr/share/oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git \
+        /usr/share/oh-my-zsh/custom/plugins/zsh-autosuggestions
+fi
+
+# Install zsh-syntax-highlighting
+if [ ! -d "/usr/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        /usr/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+fi
+
+# Update the system zshrc to include new plugins
+sed -i '/^plugins=(/,/^)/ c\
+plugins=(\
+    git\
+    sudo\
+    colored-man-pages\
+    command-not-found\
+    extract\
+    z\
+    history\
+    docker\
+    npm\
+    python\
+    pip\
+    virtualenv\
+    zsh-autosuggestions\
+    zsh-syntax-highlighting\
+)' /etc/zsh/zshrc.oh-my-zsh
+
+# Set proper permissions for new plugins
+chown -R root:root /usr/share/oh-my-zsh/custom
+chmod -R 755 /usr/share/oh-my-zsh/custom
+
+# Create zsh documentation
+cat > /usr/share/doc/nanite-zsh-setup.txt << 'EOF'
+Nanite Linux - Zsh with Oh My Zsh Setup
+
+Your Nanite Linux distribution comes with zsh and Oh My Zsh pre-configured:
+
+FEATURES:
+- Zsh as default shell for all users
+- Oh My Zsh framework with aussiegeek theme
+- Useful plugins: git, sudo, colored-man-pages, command-not-found, 
+  extract, z, history, docker, npm, python, pip, virtualenv,
+  zsh-autosuggestions, zsh-syntax-highlighting
+- Custom Nanite aliases and welcome message
+- Enhanced command completion and history
+
+CONFIGURATION FILES:
+- System template: /etc/zsh/zshrc.oh-my-zsh
+- User config: ~/.zshrc
+- Oh My Zsh: /usr/share/oh-my-zsh
+
+COMMANDS:
+- setup-user-zsh <username>: Setup zsh for specific user
+- zsh --version: Check zsh version
+- echo $ZSH_THEME: Check current theme
+
+To customize your zsh experience, edit ~/.zshrc in your home directory.
+
+For more themes and plugins, visit:
+https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
+EOF
+
+# Update manual pages
+if command -v mandb >/dev/null 2>&1; then
+    mandb -q 2>/dev/null || true
+fi
+
+echo "I: Zsh with Oh My Zsh setup completed successfully!"
+echo "   - Installed zsh with oh-my-zsh framework"
+echo "   - Set aussiegeek theme as default"
+echo "   - Configured useful plugins and autosuggestions"
+echo "   - Set zsh as default shell system-wide"
+echo "   - Added Nanite-specific aliases and branding"

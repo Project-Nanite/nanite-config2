@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+lb config noauto \
+    --distribution bookworm \
+    --architecture amd64 \
+    --bootloaders "syslinux grub-efi" \
+    --linux-flavours amd64 \
+    --iso-publisher "Nanite Linux" \
+    --iso-volume "Nanite Installer" \
+    --iso-application "Nanite AI/ML Distribution" \
+    --apt-indices false \
+    --firmware-binary true \
+    --firmware-chroot true \
+    --archive-areas "main contrib non-free non-free-firmware" \
+    "${@}"
+
+
+
+    # --bootloaders "grub-pc grub-efi" \

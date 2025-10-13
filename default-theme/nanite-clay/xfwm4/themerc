@@ -1,0 +1,115 @@
+# Nanite Clay XFWM4 Theme
+# Beautiful Claymorphism window manager theme
+
+# Button layout and spacing
+button_layout=O|HMC
+button_offset=6
+button_spacing=3
+
+# Active window colors (warm clay tones)
+active_text_color=#2c2c2c
+active_text_shadow_color=#ffffff
+active_text_shadow_offset_x=0
+active_text_shadow_offset_y=1
+
+# Inactive window colors
+inactive_text_color=#8a8a8a
+inactive_text_shadow_color=#ffffff
+inactive_text_shadow_offset_x=0
+inactive_text_shadow_offset_y=1
+
+# Beautiful typography
+title_font=Inter Bold 11
+title_shadow=true
+
+# Window borders with clay styling
+frame_border_top=8
+frame_border_bottom=8
+frame_border_left=8
+frame_border_right=8
+
+# Active window frame (warm clay gradient)
+active_border_color=#e8a87c
+active_color_1=#f8f6f3
+active_color_2=#f2f0eb
+active_hilight_1=#ffffff
+active_hilight_2=#f5dcc7
+active_mid_1=#f2f0eb
+active_mid_2=#e8c4a6
+active_shadow_1=#d4a574
+active_shadow_2=#c49776
+
+# Inactive window frame (muted clay tones)
+inactive_border_color=#d0d0ce
+inactive_color_1=#f5f5f0
+inactive_color_2=#f0f0ec
+inactive_hilight_1=#ffffff
+inactive_hilight_2=#f8f8f6
+inactive_mid_1=#f0f0ec
+inactive_mid_2=#e8e8e4
+inactive_shadow_1=#d8d8d4
+inactive_shadow_2=#c8c8c4
+
+# Window transparency and effects
+active_opacity=100
+inactive_opacity=92
+
+# Maximized window settings
+maximized_offset=0
+full_width_title=true
+title_vertical_offset_active=3
+title_vertical_offset_inactive=3
+title_horizontal_offset=12
+
+# Button settings for modern look
+show_app_icon=false
+clip_to_screen=true
+wrap_windows=true
+urgent_blink=true
+
+# Beautiful shadow effects
+shadow_opacity_active=25
+shadow_opacity_inactive=15
+shadow_offset_x=0
+shadow_offset_y=4
+
+# Window placement
+placement_ratio=25
+placement_mode=center
+
+# Modern window behavior
+resize_opacity=85
+move_opacity=90
+popup_opacity=95
+show_popup_shadow=true
+show_frame_shadow=true
+show_dock_shadow=true
+
+# Animation and effects
+double_click_action=maximize
+easy_click=true
+horiz_scroll_opacity=false
+focus_hint=true
+urgent_blink=true
+
+# Clay-specific enhancements
+borderless_maximize=true
+cycle_hidden=true
+cycle_minimum=true
+cycle_preview=true
+cycle_tabwin_mode=0
+
+# Window snapping
+snap_to_border=true
+snap_to_windows=true
+snap_width=15
+snap_resist=true
+
+# Workspace settings
+workspace_count=4
+workspace_names=Main;Code;Web;Media
+
+# Theme specific settings
+theme_version=2.0
+theme_name=Nanite Clay
+theme_description=Beautiful Claymorphism window manager theme 

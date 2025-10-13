@@ -1,0 +1,259 @@
+# FUTURISTIC AI TERMINAL THEME
+# High-tech terminal styling for AI computing
+
+# Terminal appearance - AI interface
+TerminalTitle=AI TERMINAL
+TerminalTitleFull=AI TERMINAL - %n
+TerminalTitleTooltip=AI TERMINAL - %n
+TerminalTitleFullTooltip=AI TERMINAL - %n
+
+# Font settings - Monospace AI font
+FontName=JetBrains Mono 10
+FontUseSystem=false
+FontAllowBold=true
+FontBold=false
+FontItalic=false
+FontSize=10
+FontUseCustomColors=true
+
+# Color scheme - Futuristic AI dark theme
+ColorPalette=#111319;#ff0040;#00ff80;#ff9500;#00ccff;#8000ff;#00ff00;#ffffff;#666666;#ff0040;#00ff80;#ff9500;#00ccff;#8000ff;#00ff00;#ffffff
+
+# Background and foreground - AI colors
+ColorForeground=#4a9eff
+ColorBackground=#111319
+ColorBackgroundIntense=#0d1117
+ColorBackgroundFaint=#1a1f2e
+
+# Cursor settings - AI cursor
+CursorBlinkMode=1
+CursorBlink=300
+CursorShape=0
+CursorColor=#4a9eff
+CursorColorFaint=#3d7bff
+
+# Selection colors - AI selection
+ColorSelection=#4a9eff
+ColorSelectionFaint=#3d7bff
+
+# Tab settings - AI tabs
+TabActivityColor=#ff0040
+TabActivityColorFaint=#ff3366
+TabColor=#111319
+TabColorFaint=#0d1117
+
+# Scrollbar settings - Minimal AI scrollbar
+ScrollbarPosition=2
+ScrollbarIsVertical=true
+ScrollbarFull=false
+ScrollbarOnOutput=false
+ScrollbackLines=50000
+ScrollbackIsUnlimited=false
+
+# Terminal behavior - AI settings
+TerminalMisc=0
+TerminalMiscCursorBlink=1
+TerminalMiscCursorShape=0
+TerminalMiscCursorBlinkMode=1
+TerminalMiscCursorBlink=300
+TerminalMiscCursorShape=0
+TerminalMiscCursorColor=#00ccff
+TerminalMiscCursorColorFaint=#0066ff
+
+# Window settings - AI window
+WindowTitle=AI TERMINAL
+WindowTitleFull=AI TERMINAL - %n
+WindowTitleTooltip=AI TERMINAL - %n
+WindowTitleFullTooltip=AI TERMINAL - %n
+
+# Menu settings - Hidden for clean AI look
+MenuBarVisible=false
+ToolBarVisible=false
+MenusAccelerated=true
+
+# General settings - Clean AI interface
+ShowMenubar=false
+ShowToolbar=false
+ShowTerminalSize=false
+ShowTerminalSizeInTitle=false
+ShowTerminalSizeInTitleFull=false
+ShowTerminalSizeInTitleTooltip=false
+ShowTerminalSizeInTitleFullTooltip=false
+
+# Bell settings - AI notifications
+BellMode=1
+BellIsVisible=true
+BellIsAudible=false
+BellIsInvisible=false
+BellIsSilent=false
+
+# Mouse settings - AI interaction
+MouseAutohide=true
+MouseWheelZoom=true
+MouseWheelZoomModifier=4
+MouseWheelZoomModifierMask=4
+
+# Copy and paste - AI behavior
+CopyOnSelection=true
+CopyOnSelectionFaint=true
+PasteOnMiddleMouseButton=true
+PasteOnMiddleMouseButtonFaint=true
+
+# URL handling - AI style links
+UrlColor=#00ccff
+UrlColorFaint=#0066ff
+UrlUnderline=false
+UrlUnderlineFaint=false
+
+# Tab handling - AI tabs
+TabActivityColor=#ff0040
+TabActivityColorFaint=#ff3366
+TabColor=#111319
+TabColorFaint=#0d1117
+
+# Background image - None for AI purity
+BackgroundImageFile=
+BackgroundImageMode=0
+BackgroundImageOpacity=0.0
+BackgroundImageShow=false
+
+# Transparency - Solid AI background
+BackgroundTransparency=0
+BackgroundTransparencyFaint=0
+BackgroundTransparencyIntense=0
+
+# Border settings - Softer AI borders
+BorderWidth=1
+BorderColor=#4a9eff
+BorderColorFaint=#3d7bff
+
+# Margin settings - AI spacing
+MarginTop=2
+MarginBottom=2
+MarginLeft=2
+MarginRight=2
+
+# Padding settings - Minimal AI padding
+PaddingTop=0
+PaddingBottom=0
+PaddingLeft=0
+PaddingRight=0
+
+# Geometry settings
+GeometryColumns=80
+GeometryRows=24
+GeometryWidth=640
+GeometryHeight=480
+
+# Position settings
+PositionX=0
+PositionY=0
+PositionWidth=640
+PositionHeight=480
+
+# State settings
+StateMaximized=false
+StateFullscreen=false
+StateAbove=false
+StateBelow=false
+StateSticky=false
+StateShaded=false
+
+# Focus settings
+FocusMode=0
+FocusNewWindows=true
+FocusAutoRaise=false
+FocusAutoRaiseDelay=500
+
+# Window placement
+PlacementMode=0
+PlacementReserve=true
+PlacementReserveX=0
+PlacementReserveY=0
+PlacementReserveWidth=0
+PlacementReserveHeight=0
+
+# Window snapping
+SnapEdgeEnabled=true
+SnapEdgeThreshold=10
+SnapEdgeDistance=10
+SnapEdgeResistance=0.5
+
+# Window cycling
+CycleMinimum=1
+CycleMinimumTab=1
+CycleMinimumTabAlways=false
+
+# Compositing
+Compositing=true
+CompositingManager=xfwm4
+CompositingUnredirectFullscreen=true
+CompositingVsync=true
+
+# Window animations
+AnimationEnabled=true
+AnimationDuration=200
+AnimationEasing=ease-out-cubic
+
+# Window opacity
+OpacityActive=100
+OpacityInactive=95
+OpacityRule=0:class_g=Gimp:100
+OpacityRule=0:class_g=Firefox:100
+OpacityRule=0:class_g=Thunderbird:100
+
+# Window decorations
+DecorationPlacement=top
+DecorationOffsetX=0
+DecorationOffsetY=0
+DecorationOffsetWidth=0
+DecorationOffsetHeight=0
+
+# Title bar height
+TitleHeight=28
+TitlePaddingX=8
+TitlePaddingY=4
+
+# Button size
+ButtonWidth=24
+ButtonHeight=24
+ButtonPaddingX=2
+ButtonPaddingY=2
+
+# Window states
+StateMaximized=true
+StateFullscreen=true
+StateAbove=true
+StateBelow=true
+StateSticky=true
+StateShaded=true
+
+# Workspace management
+WorkspaceCount=4
+WorkspaceName0=Main
+WorkspaceName1=Code
+WorkspaceName2=Web
+WorkspaceName3=Media
+
+# Mouse bindings
+MouseScrollWorkspace=true
+MouseScrollWorkspaceThreshold=100
+MouseScrollWorkspaceDirection=horizontal
+
+# Keyboard shortcuts
+KeybindWorkspace1=<Super>1
+KeybindWorkspace2=<Super>2
+KeybindWorkspace3=<Super>3
+KeybindWorkspace4=<Super>4
+
+# Window rules
+WindowRules=class=Gimp:state=maximized
+WindowRules=class=Firefox:state=maximized
+WindowRules=class=Thunderbird:state=maximized
+WindowRules=class=LibreOffice:state=maximized
+
+# Theme metadata
+ThemeName=Nanite Modern Terminal
+ThemeAuthor=Nanite Linux Team
+ThemeVersion=1.0
+ThemeDescription=Clean, modern terminal theme for Nanite Linux

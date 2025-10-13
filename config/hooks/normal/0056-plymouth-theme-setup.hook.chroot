@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Final Plymouth Theme Setup for Ceratopsian
+# This hook ensures the ceratopsian theme is properly configured and linked
+
+set -e
+
+echo "I: Setting up Plymouth ceratopsian theme..."
+
+# Create Plymouth configuration directory
+mkdir -p /etc/plymouth
+
+# Ensure Plymouth is configured to use ceratopsian theme
+cat > /etc/plymouth/plymouthd.conf << 'EOF'
+[Daemon]
+Theme=ceratopsian
+ShowDelay=0
+DeviceTimeout=8
+EOF
+
+# Create alternative plymouth config in proper location
+mkdir -p /usr/share/plymouth
+cat > /usr/share/plymouth/plymouthd.defaults << 'EOF'
+[Daemon]
+Theme=ceratopsian
+ShowDelay=0
+DeviceTimeout=8
+EOF
+
+# Ensure the theme is set as default
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    echo "I: Setting ceratopsian as default Plymouth theme..."
+    plymouth-set-default-theme ceratopsian || true
+fi
+
+# Create a backup script to ensure theme persists
+cat > /usr/local/bin/set-plymouth-theme << 'EOF'
+#!/bin/bash
+# Script to ensure Plymouth uses ceratopsian theme
+plymouth-set-default-theme ceratopsian 2>/dev/null || true
+update-initramfs -u 2>/dev/null || true
+EOF
+
+chmod +x /usr/local/bin/set-plymouth-theme
+
+# Verify theme files exist
+if [ -f /usr/share/plymouth/themes/ceratopsian/ceratopsian.plymouth ]; then
+    echo "I: Ceratopsian Plymouth theme files found"
+    echo "   Theme file: $(ls -la /usr/share/plymouth/themes/ceratopsian/ceratopsian.plymouth)"
+    echo "   Script file: $(ls -la /usr/share/plymouth/themes/ceratopsian/ceratopsian.script 2>/dev/null || echo 'Not found')"
+    echo "   Logo file: $(ls -la /usr/share/plymouth/themes/ceratopsian/logo.png 2>/dev/null || echo 'Not found')"
+else
+    echo "W: Ceratopsian Plymouth theme files not found!"
+fi
+
+echo "I: Plymouth ceratopsian theme setup completed"

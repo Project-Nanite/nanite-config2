@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Install Nanite
+Name[en_US]=Install Nanite Linux
+Comment=Install Nanite Linux to your computer
+Comment[en_US]=Install the beautiful Nanite Linux distribution to your hard drive
+Exec=pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY calamares
+Icon=nanite-logo
+Terminal=false
+StartupNotify=true
+Categories=System;Settings;
+Keywords=install;system;setup;calamares;nanite;
+GenericName=System Installer
+GenericName[en_US]=Nanite Linux Installer
+X-GNOME-Autostart-enabled=false
+Path=/home/nanite

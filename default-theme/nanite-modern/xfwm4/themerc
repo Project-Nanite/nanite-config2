@@ -1,0 +1,166 @@
+# Nanite Modern XFWM4 Theme
+# Clean, professional window decorations
+
+# Window title styling
+title.font: Inter 10
+title.color: #2c3e50
+title.color.active: #ffffff
+title.color.inactive: #7f8c8d
+
+# Window borders
+border.width: 1
+border.color: #e1e8ed
+border.color.active: #3498db
+border.color.inactive: #bdc3c7
+
+# Window shadows
+shadow.enable: true
+shadow.offset.x: 0
+shadow.offset.y: 2
+shadow.color: rgba(52, 73, 94, 0.15)
+shadow.radius: 8
+
+# Button layout (O|HMC - close, minimize, maximize)
+button.layout: O|HMC
+button.offset: 4
+button.spacing: 2
+
+# Button styling
+button.color: #f8f9fa
+button.color.active: #3498db
+button.color.prelight: #5dade2
+button.color.pressed: #2980b9
+
+# Button icons
+button.icon.placement: N
+button.icon.offset.x: 0
+button.icon.offset.y: 0
+
+# Close button
+button.close.image: close
+button.close.color: #e74c3c
+button.close.color.active: #c0392b
+button.close.color.prelight: #e67e22
+
+# Minimize button
+button.minimize.image: minimize
+button.minimize.color: #f39c12
+button.minimize.color.active: #e67e22
+button.minimize.color.prelight: #f1c40f
+
+# Maximize button
+button.maximize.image: maximize
+button.maximize.color: #27ae60
+button.maximize.color.active: #2ecc71
+button.maximize.color.prelight: #16a085
+
+# Hide button
+button.hide.image: hide
+button.hide.color: #95a5a6
+button.hide.color.active: #7f8c8d
+button.hide.color.prelight: #bdc3c7
+
+# Menu button
+button.menu.image: menu
+button.menu.color: #9b59b6
+button.menu.color.active: #8e44ad
+button.menu.color.prelight: #a569bd
+
+# Window focus
+focus.mode: click
+focus.newWindows: true
+focus.autoRaise: false
+focus.autoRaiseDelay: 500
+
+# Window placement
+placement.mode: center
+placement.reserve: true
+placement.reserve.x: 0
+placement.reserve.y: 0
+placement.reserve.width: 0
+placement.reserve.height: 0
+
+# Window snapping
+snap.edge.enabled: true
+snap.edge.threshold: 10
+snap.edge.distance: 10
+snap.edge.resistance: 0.5
+
+# Window cycling
+cycle.minimum: 1
+cycle.minimum.tab: 1
+cycle.minimum.tab.always: false
+
+# Compositing
+compositing: true
+compositing.manager: xfwm4
+compositing.unredirect.fullscreen: true
+compositing.vsync: true
+
+# Window animations
+animation.enabled: true
+animation.duration: 200
+animation.easing: ease-out-cubic
+
+# Window opacity
+opacity.active: 100
+opacity.inactive: 95
+opacity.rule: 0:class_g=Gimp:100
+opacity.rule: 0:class_g=Firefox:100
+opacity.rule: 0:class_g=Thunderbird:100
+
+# Window decorations
+decoration.placement: top
+decoration.offset.x: 0
+decoration.offset.y: 0
+decoration.offset.width: 0
+decoration.offset.height: 0
+
+# Title bar height
+title.height: 28
+title.padding.x: 8
+title.padding.y: 4
+
+# Button size
+button.width: 24
+button.height: 24
+button.padding.x: 2
+button.padding.y: 2
+
+# Window states
+state.maximized: true
+state.fullscreen: true
+state.above: true
+state.below: true
+state.sticky: true
+state.shaded: true
+
+# Workspace management
+workspace.count: 4
+workspace.name.0: Main
+workspace.name.1: Code
+workspace.name.2: Web
+workspace.name.3: Media
+
+# Mouse bindings
+mouse.scroll.workspace: true
+mouse.scroll.workspace.threshold: 100
+mouse.scroll.workspace.direction: horizontal
+
+# Keyboard shortcuts
+keybind.workspace.1: <Super>1
+keybind.workspace.2: <Super>2
+keybind.workspace.3: <Super>3
+keybind.workspace.4: <Super>4
+
+# Window rules
+window.rules: class=Gimp:state=maximized
+window.rules: class=Firefox:state=maximized
+window.rules: class=Thunderbird:state=maximized
+window.rules: class=LibreOffice:state=maximized
+
+# Theme metadata
+theme.name: Nanite Modern
+theme.author: Nanite Linux Team
+theme.version: 1.0
+theme.description: Clean, modern window decorations for Nanite Linux

@@ -1,0 +1,684 @@
+/* Nanite Modern - Beautiful GTK3 Theme */
+/* Modern, clean design with excellent contrast and readability */
+
+/* Modern Color Palette */
+@define-color bg_color #ffffff;
+@define-color fg_color #2c3e50;
+@define-color base_color #ffffff;
+@define-color text_color #2c3e50;
+@define-color selected_bg_color #3498db;
+@define-color selected_fg_color #ffffff;
+@define-color tooltip_bg_color #34495e;
+@define-color tooltip_fg_color #ecf0f1;
+@define-color warning_color #f39c12;
+@define-color error_color #e74c3c;
+@define-color success_color #27ae60;
+
+/* Modern accent colors */
+@define-color primary_blue #3498db;
+@define-color primary_dark #2980b9;
+@define-color secondary_blue #5dade2;
+@define-color accent_gray #95a5a6;
+@define-color light_gray #ecf0f1;
+@define-color dark_gray #34495e;
+@define-color surface_white #ffffff;
+@define-color surface_light #f8f9fa;
+
+/* Typography */
+@define-color text_primary #2c3e50;
+@define-color text_secondary #7f8c8d;
+@define-color text_disabled #bdc3c7;
+
+/* Modern shadows and effects */
+@define-color shadow_light rgba(52, 73, 94, 0.1);
+@define-color shadow_medium rgba(52, 73, 94, 0.15);
+@define-color shadow_dark rgba(52, 73, 94, 0.2);
+@define-color border_light rgba(52, 73, 94, 0.1);
+@define-color border_medium rgba(52, 73, 94, 0.2);
+
+/* Base styling */
+* {
+    font-family: "Inter", "Segoe UI", "Ubuntu", "Roboto", sans-serif;
+    font-size: 11px;
+    outline: none;
+    border-radius: 8px;
+}
+
+/* Windows and dialogs */
+window, dialog {
+    background: @surface_white;
+    color: @text_primary;
+    border-radius: 12px;
+    box-shadow: 
+        0 10px 30px @shadow_medium,
+        0 1px 3px @shadow_light;
+}
+
+/* Modern buttons */
+button {
+    background: linear-gradient(135deg, @surface_white 0%, @light_gray 100%);
+    border: 1px solid @border_light;
+    border-radius: 8px;
+    color: @text_primary;
+    padding: 8px 16px;
+    margin: 2px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 2px 4px @shadow_light,
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+button:hover {
+    background: linear-gradient(135deg, @light_gray 0%, @secondary_blue 100%);
+    border-color: @primary_blue;
+    color: @primary_dark;
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px @shadow_medium,
+        0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+button:active {
+    background: linear-gradient(135deg, @primary_blue 0%, @primary_dark 100%);
+    color: @surface_white;
+    transform: translateY(0px);
+    box-shadow: 
+        0 2px 8px @shadow_dark,
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+    background: @surface_light;
+    color: @text_disabled;
+    border-color: @border_light;
+    box-shadow: none;
+}
+
+/* Primary action buttons */
+button.suggested-action {
+    background: linear-gradient(135deg, @primary_blue 0%, @primary_dark 100%);
+    color: @surface_white;
+    border-color: @primary_dark;
+    font-weight: 600;
+}
+
+button.suggested-action:hover {
+    background: linear-gradient(135deg, @secondary_blue 0%, @primary_blue 100%);
+    box-shadow: 
+        0 4px 12px rgba(52, 152, 219, 0.3),
+        0 0 0 2px rgba(52, 152, 219, 0.3);
+}
+
+/* Destructive buttons */
+button.destructive-action {
+    background: linear-gradient(135deg, @error_color 0%, #c0392b 100%);
+    color: @surface_white;
+    border-color: #c0392b;
+}
+
+button.destructive-action:hover {
+    background: linear-gradient(135deg, #e67e22 0%, @error_color 100%);
+    box-shadow: 
+        0 4px 12px rgba(231, 76, 60, 0.3),
+        0 0 0 2px rgba(231, 76, 60, 0.3);
+}
+
+/* Modern entry fields */
+entry {
+    background: @surface_white;
+    border: 2px solid @border_light;
+    border-radius: 8px;
+    color: @text_primary;
+    padding: 10px 14px;
+    margin: 2px;
+    font-size: 12px;
+    box-shadow: 
+        inset 0 1px 3px @shadow_light,
+        0 1px 2px @shadow_light;
+    transition: all 0.2s ease;
+}
+
+entry:focus {
+    border-color: @primary_blue;
+    background: @surface_white;
+    box-shadow: 
+        inset 0 1px 3px @shadow_light,
+        0 0 0 3px rgba(52, 152, 219, 0.15),
+        0 2px 8px @shadow_light;
+}
+
+entry:disabled {
+    background: @surface_light;
+    color: @text_disabled;
+    border-color: @border_light;
+}
+
+/* Beautiful scrollbars */
+scrollbar {
+    background: @surface_light;
+    border-radius: 6px;
+    margin: 4px;
+}
+
+scrollbar slider {
+    background: linear-gradient(135deg, @primary_blue 0%, @secondary_blue 100%);
+    border-radius: 6px;
+    min-width: 10px;
+    min-height: 10px;
+    margin: 2px;
+    box-shadow: 
+        0 2px 4px @shadow_medium,
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: all 0.2s ease;
+}
+
+scrollbar slider:hover {
+    background: linear-gradient(135deg, @secondary_blue 0%, @primary_blue 100%);
+    box-shadow: 
+        0 3px 6px @shadow_dark,
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Modern menus */
+menu, menubar {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid @border_light;
+    border-radius: 12px;
+    color: @text_primary;
+    padding: 8px;
+    box-shadow: 
+        0 8px 25px @shadow_medium,
+        0 2px 8px @shadow_light;
+}
+
+menuitem {
+    padding: 10px 14px;
+    margin: 2px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+menuitem:hover {
+    background: linear-gradient(135deg, @light_gray 0%, @primary_blue 100%);
+    color: @surface_white;
+    box-shadow: 
+        0 2px 8px @shadow_medium,
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Elegant notebooks/tabs */
+notebook {
+    background: @surface_white;
+    border-radius: 12px;
+    padding: 4px;
+    box-shadow: 
+        inset 0 1px 3px @shadow_light,
+        0 2px 8px @shadow_light;
+}
+
+tab {
+    background: @surface_light;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    margin: 2px;
+    color: @text_secondary;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px @shadow_light;
+}
+
+tab:checked {
+    background: linear-gradient(135deg, @primary_blue 0%, @primary_dark 100%);
+    color: @surface_white;
+    box-shadow: 
+        0 2px 8px @shadow_medium,
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Progress bars */
+progressbar {
+    background: @surface_light;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: inset 0 1px 3px @shadow_light;
+}
+
+progressbar progress {
+    background: linear-gradient(135deg, @primary_blue 0%, @primary_dark 100%);
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Checkboxes and radio buttons */
+checkbutton, radiobutton {
+    color: @text_primary;
+    padding: 4px;
+}
+
+checkbutton check, radiobutton radio {
+    background: @surface_white;
+    border: 2px solid @border_medium;
+    border-radius: 4px;
+    min-width: 16px;
+    min-height: 16px;
+    transition: all 0.2s ease;
+}
+
+checkbutton check:checked, radiobutton radio:checked {
+    background: @primary_blue;
+    border-color: @primary_dark;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Combo boxes */
+combobox {
+    background: @surface_white;
+    border: 2px solid @border_light;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 
+        inset 0 1px 3px @shadow_light,
+        0 1px 2px @shadow_light;
+}
+
+combobox:focus {
+    border-color: @primary_blue;
+    box-shadow: 
+        inset 0 1px 3px @shadow_light,
+        0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* Tree views and lists */
+treeview, list {
+    background: @surface_white;
+    color: @text_primary;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+treeview:selected, list:selected {
+    background: @primary_blue;
+    color: @surface_white;
+}
+
+/* Status bars */
+statusbar {
+    background: @surface_light;
+    color: @text_secondary;
+    border-top: 1px solid @border_light;
+    padding: 4px 8px;
+}
+
+/* Toolbars */
+toolbar {
+    background: @surface_white;
+    border-bottom: 1px solid @border_light;
+    padding: 4px;
+}
+
+toolbutton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 6px;
+    margin: 1px;
+    transition: all 0.2s ease;
+}
+
+toolbutton:hover {
+    background: @light_gray;
+    border-color: @border_medium;
+}
+
+toolbutton:active {
+    background: @primary_blue;
+    color: @surface_white;
+}
+
+/* Paned widgets */
+paned separator {
+    background: @border_light;
+    border-radius: 2px;
+}
+
+paned separator:hover {
+    background: @primary_blue;
+}
+
+/* Frames and labels */
+frame {
+    border: 1px solid @border_light;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+label {
+    color: @text_primary;
+}
+
+label:disabled {
+    color: @text_disabled;
+}
+
+/* Links */
+link {
+    color: @primary_blue;
+    text-decoration: none;
+}
+
+link:hover {
+    color: @primary_dark;
+    text-decoration: underline;
+}
+
+/* Spinners */
+spinner {
+    color: @primary_blue;
+}
+
+/* Scale widgets */
+scale {
+    background: @surface_light;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+scale slider {
+    background: @primary_blue;
+    border-radius: 6px;
+    min-width: 12px;
+    min-height: 12px;
+    box-shadow: 0 2px 4px @shadow_medium;
+}
+
+scale trough {
+    background: @surface_light;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px @shadow_light;
+}
+
+/* Calendar */
+calendar {
+    background: @surface_white;
+    color: @text_primary;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+calendar:selected {
+    background: @primary_blue;
+    color: @surface_white;
+}
+
+/* Color chooser */
+colorchooser {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+/* Font chooser */
+fontchooser {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+/* File chooser */
+filechooser {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+filechooser .sidebar {
+    background: @surface_light;
+    border-right: 1px solid @border_light;
+}
+
+/* Print dialog */
+printdialog {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* About dialog */
+aboutdialog {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Preferences dialog */
+preferencesdialog {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Assistant dialog */
+assistant {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Message dialog */
+messagedialog {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Color selection */
+colorsel {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Recent chooser */
+recentchooser {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* App chooser */
+appchooser {
+    background: @surface_white;
+    color: @text_primary;
+}
+
+/* Volume button */
+volumebutton {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+/* Lock button */
+lockbutton {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+/* Model button */
+modelbutton {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 8px;
+}
+
+/* Info bar */
+infobar {
+    background: @light_gray;
+    color: @text_primary;
+    border-bottom: 1px solid @border_light;
+}
+
+/* Header bar */
+headerbar {
+    background: @surface_white;
+    color: @text_primary;
+    border-bottom: 1px solid @border_light;
+    box-shadow: 0 1px 3px @shadow_light;
+}
+
+headerbar button {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    margin: 2px;
+    transition: all 0.2s ease;
+}
+
+headerbar button:hover {
+    background: @light_gray;
+}
+
+headerbar button:active {
+    background: @primary_blue;
+    color: @surface_white;
+}
+
+/* Search bar */
+searchbar {
+    background: @surface_light;
+    border-bottom: 1px solid @border_light;
+}
+
+searchbar entry {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin: 8px;
+}
+
+/* Sidebar */
+sidebar {
+    background: @surface_light;
+    border-right: 1px solid @border_light;
+}
+
+/* Stack switcher */
+stackswitcher {
+    background: @surface_white;
+    border-bottom: 1px solid @border_light;
+}
+
+stackswitcher button {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 12px 20px;
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+stackswitcher button:checked {
+    background: @primary_blue;
+    color: @surface_white;
+    box-shadow: inset 0 -2px 0 @primary_dark;
+}
+
+/* View switcher */
+viewswitcher {
+    background: @surface_white;
+    border-bottom: 1px solid @border_light;
+}
+
+viewswitcher button {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 12px 20px;
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+viewswitcher button:checked {
+    background: @primary_blue;
+    color: @surface_white;
+    box-shadow: inset 0 -2px 0 @primary_dark;
+}
+
+/* Action bar */
+actionbar {
+    background: @surface_light;
+    border-top: 1px solid @border_light;
+}
+
+/* Revealer */
+revealer {
+    background: @surface_white;
+}
+
+/* Stack */
+stack {
+    background: @surface_white;
+}
+
+/* Overlay */
+overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Popover */
+popover {
+    background: @surface_white;
+    border: 1px solid @border_light;
+    border-radius: 12px;
+    box-shadow: 
+        0 8px 25px @shadow_medium,
+        0 2px 8px @shadow_light;
+}
+
+/* Tooltip */
+tooltip {
+    background: @tooltip_bg_color;
+    color: @tooltip_fg_color;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 
+        0 4px 12px @shadow_dark,
+        0 2px 4px @shadow_medium;
+}
+
+/* Selection */
+selection {
+    background: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* Focus */
+*:focus {
+    outline: 2px solid @primary_blue;
+    outline-offset: 2px;
+}
+
+/* Hover effects */
+*:hover {
+    transition: all 0.2s ease;
+}
+
+/* Active states */
+*:active {
+    transition: all 0.1s ease;
+}
+
+/* Disabled states */
+*:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Print styles */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}

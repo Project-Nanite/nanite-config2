@@ -1,0 +1,28 @@
+Nanite Branding Package
+========================
+
+This package provides custom branding for the Nanite Linux distribution.
+
+Features:
+- Custom Nanite wallpaper
+- Distribution logo replacement
+- Automatic XFCE desktop configuration
+- Support for both new and existing users
+
+Installation:
+The package will automatically:
+1. Backup existing branding files
+2. Install the Nanite wallpaper and logo
+3. Configure XFCE desktop for new users
+4. Apply changes to existing users
+
+After installation:
+- New users will automatically get the Nanite branding
+- Existing users may need to log out and back in to see changes
+- The wallpaper will be set to the Nanite design
+- Distribution logos will be updated throughout the system
+
+Removal:
+When the package is removed, it will restore the original Debian branding.
+
+For support or questions, please contact the Nanite team.

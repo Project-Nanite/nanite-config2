@@ -1,0 +1,146 @@
+#!/bin/bash
+
+# System Information Branding Hook
+# Replace all Debian references with Nanite and ensure logo is properly set
+
+set -e
+
+echo "I: Updating system information for Nanite branding..."
+
+# Ensure os-release is properly configured
+cat > /etc/os-release << 'EOF'
+PRETTY_NAME="Nanite Linux 1.0"
+NAME="Nanite Linux"
+VERSION_ID="1.0"
+VERSION="1.0 (Stable)"
+ID=nanite
+ID_LIKE=debian
+HOME_URL="https://nanite.software/"
+SUPPORT_URL="https://nanite.software/support"
+BUG_REPORT_URL="https://nanite.software/bugs"
+LOGO=nanite-logo
+ANSI_COLOR="1;34"
+EOF
+
+# Create symlink for usr/lib/os-release
+ln -sf /etc/os-release /usr/lib/os-release
+
+# Update lsb-release
+cat > /etc/lsb-release << 'EOF'
+DISTRIB_ID=Nanite
+DISTRIB_RELEASE=1.0
+DISTRIB_CODENAME=stable
+DISTRIB_DESCRIPTION="Nanite Linux 1.0"
+EOF
+
+# Update issue files for login banner
+cat > /etc/issue << 'EOF'
+Nanite Linux 1.0 \l
+
+Welcome to Nanite Linux - A Beautiful AI/ML Distribution
+
+EOF
+
+cat > /etc/issue.net << 'EOF'
+Nanite Linux 1.0
+
+Welcome to Nanite Linux - A Beautiful AI/ML Distribution
+EOF
+
+# Update motd
+mkdir -p /etc/update-motd.d
+cat > /etc/update-motd.d/00-header << 'EOF'
+#!/bin/sh
+#
+#    00-header - create the header of the MOTD
+#
+printf "Welcome to %s (%s %s %s)\n" "$(lsb_release -ds)" "$(uname -o)" "$(uname -r)" "$(uname -m)"
+EOF
+
+chmod +x /etc/update-motd.d/00-header
+
+# Ensure system branding files use Nanite
+echo "I: Updating desktop environment branding files..."
+
+# Update base-files
+if [ -d /usr/share/base-files ]; then
+    mkdir -p /usr/share/base-files
+    cat > /usr/share/base-files/motd << 'EOF'
+
+The programs included with the Nanite Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Nanite Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+EOF
+fi
+
+# Update any remaining Debian references in system files
+echo "I: Replacing Debian references with Nanite..."
+
+# Safe replacements in configuration files
+if [ -f /etc/dpkg/origins/default ]; then
+    sed -i 's/Vendor: Debian/Vendor: Nanite/g' /etc/dpkg/origins/default 2>/dev/null || true
+    sed -i 's/Bugs: debbugs/Bugs: nanite-bugs/g' /etc/dpkg/origins/default 2>/dev/null || true
+fi
+
+# Update desktop environment specific files
+for file in /usr/share/applications/*.desktop; do
+    if [ -f "$file" ]; then
+        # Replace any Debian references in desktop files
+        sed -i 's/Debian/Nanite/g' "$file" 2>/dev/null || true
+    fi
+done
+
+# Ensure the correct logo is used in system dialogs
+echo "I: Setting up system logo references..."
+
+# Update GTK settings for system-wide logo
+mkdir -p /etc/gtk-3.0
+if [ ! -f /etc/gtk-3.0/settings.ini ]; then
+    cat > /etc/gtk-3.0/settings.ini << 'EOF'
+[Settings]
+gtk-icon-theme-name=Nanite-Icons
+gtk-theme-name=Nanite-XFCE-Theme-Dark
+gtk-application-prefer-dark-theme=true
+EOF
+fi
+
+# Set environment variables for consistent branding
+cat > /etc/environment.d/50-nanite.conf << 'EOF'
+DISTRIB_ID=Nanite
+DISTRIB_DESCRIPTION="Nanite Linux"
+LOGO=nanite-logo
+VENDOR=Nanite
+EOF
+
+# Update PolicyKit branding
+if [ -d /usr/share/polkit-1 ]; then
+    mkdir -p /usr/share/polkit-1/actions
+    for action_file in /usr/share/polkit-1/actions/*.policy; do
+        if [ -f "$action_file" ]; then
+            sed -i 's/Debian/Nanite/g' "$action_file" 2>/dev/null || true
+        fi
+    done
+fi
+
+# Create system info script
+cat > /usr/local/bin/nanite-sysinfo << 'EOF'
+#!/bin/bash
+# Nanite System Information Script
+
+echo "System Information:"
+echo "==================="
+echo "Distribution: $(lsb_release -ds)"
+echo "Kernel: $(uname -r)"
+echo "Architecture: $(uname -m)"
+echo "Desktop: XFCE $(xfce4-session --version 2>/dev/null | head -1 | cut -d' ' -f2)"
+echo "Theme: Nanite XFCE Theme"
+echo "Logo: Nanite Geometric Bee"
+EOF
+
+chmod +x /usr/local/bin/nanite-sysinfo
+
+echo "I: System information branding completed!"
+echo "   All system dialogs should now show Nanite branding and logo"

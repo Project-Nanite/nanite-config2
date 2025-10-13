@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Nanite Clay
+Comment=Beautiful Claymorphism theme with soft, clay-like surfaces
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=nanite-clay
+MetacityTheme=nanite-clay
+IconTheme=Papirus
+CursorTheme=default
+ButtonLayout=close,minimize,maximize:menu
+
+[Desktop Entry]
+Name=Nanite Clay
+Comment=Beautiful Claymorphism theme with soft, clay-like surfaces
+Type=X-GNOME-Metatheme
+Version=2.0
