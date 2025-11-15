@@ -1,0 +1,8 @@
+# This directory stores Trivy security scan results
+# Generated files:
+# - trivy-report.pdf (Main PDF report)
+# - trivy-results.json (JSON format)
+# - trivy-results.txt (Table format)
+# - trivy-results.sarif (SARIF format for GitHub Security)
+# - trivy-report.html (HTML format)
+

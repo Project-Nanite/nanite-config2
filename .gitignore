@@ -73,3 +73,7 @@ Thumbs.db
 # /local/hooks/ 
 *.pem
 nanite-key.pem
+
+# Trivy security scan outputs (keep .gitkeep)
+trivy-outputs/*
+!trivy-outputs/.gitkeep
