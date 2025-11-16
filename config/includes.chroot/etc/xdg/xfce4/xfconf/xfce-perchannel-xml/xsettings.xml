@@ -2,8 +2,8 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="nanite-Orange-Dark"/>
-    <property name="IconThemeName" type="string" value="Flat-Remix-Orange-Dark"/>
+    <property name="ThemeName" type="string" value="Nanite-XFCE-Theme-Dark"/>
+    <property name="IconThemeName" type="string" value="Nanite-XFCE-Theme-Dark"/>
   </property>
   <property name="Xft" type="empty">
     <property name="HintStyle" type="string" value="hintslight"/>

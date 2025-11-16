@@ -91,16 +91,16 @@ ForegroundVisited=92,98,108
 [General]
 fixed=Fira Code,10,-1,5,50,0,0,0,0,0,Regular
 BrowserApplication=default-browser.desktop
-ColorScheme=nanite-Orange-Dark
-Name=nanite-Orange-Dark
+ColorScheme=Nanite-XFCE-Theme-Dark
+Name=Nanite-XFCE-Theme-Dark
 shadeSortColumn=true
 widgetStyle=Breeze
 
 [Icons]
-Theme=Flat-Remix-Orange-Dark
+Theme=Nanite-XFCE-Theme-Dark
 
 [KDE]
-LookAndFeelPackage=org.nanite.naniteorangedark.desktop
+LookAndFeelPackage=org.nanite.nanitexfce-theme-dark.desktop
 contrast=4
 widgetStyle=Breeze
 
